@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="이피캠텍 영업팀"/>
+<meta name="theme-color" content="#ffffff"/>
+<title>이피캠텍 국내외영업팀</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f7f7f5;--bg-tertiary:#f0efeb;
+  --text-primary:#1a1a1a;--text-secondary:#666660;--text-tertiary:#999994;
+  --border-light:rgba(0,0,0,0.10);--border-mid:rgba(0,0,0,0.18);
+  --radius-md:8px;--radius-lg:12px;--radius-xl:16px;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;
+    --text-primary:#f2f2f7;--text-secondary:#aeaeb2;--text-tertiary:#636366;
+    --border-light:rgba(255,255,255,0.10);--border-mid:rgba(255,255,255,0.18);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg-tertiary);}
+body,input,select,textarea,button{font-family:var(--font-sans);}
+input,select,textarea{background:var(--bg-primary);color:var(--text-primary);border:0.5px solid var(--border-mid);border-radius:var(--radius-md);padding:7px 10px;width:100%;font-size:13px;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:#534AB7;}
+textarea{resize:none;}
+button{cursor:pointer;}
+
+/* ── APP SHELL ── */
+.app-shell{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;background:var(--bg-tertiary);}
+.hdr{background:var(--bg-primary);padding:env(safe-area-inset-top,12px) 14px 9px;border-bottom:0.5px solid var(--border-light);flex-shrink:0;}
+.hdr-row{display:flex;justify-content:space-between;align-items:center;}
+.hdr-title{font-size:13px;font-weight:600;color:var(--text-primary);}
+.hdr-sub{font-size:10px;color:var(--text-tertiary);margin-top:1px;}
+.user-pill{display:flex;align-items:center;gap:4px;font-size:11px;padding:4px 10px;border-radius:20px;background:var(--bg-secondary);border:0.5px solid var(--border-light);color:var(--text-secondary);}
+.gcal-pill{display:flex;align-items:center;gap:3px;font-size:10px;padding:3px 8px;border-radius:20px;border:0.5px solid var(--border-light);color:var(--text-secondary);margin-top:4px;}
+.gcal-pill.on{background:#E6F1FB;color:#0C447C;border-color:#85B7EB;}
+
+.tab-bar{display:flex;background:var(--bg-primary);border-bottom:0.5px solid var(--border-light);flex-shrink:0;}
+.tab{flex:1;padding:7px 0 calc(7px + env(safe-area-inset-bottom,0px)/2);text-align:center;font-size:10px;color:var(--text-tertiary);border-bottom:2px solid transparent;line-height:1.4;}
+.tab.on{color:var(--text-primary);border-bottom:2px solid var(--text-primary);font-weight:600;}
+
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.pane{display:none;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));}
+.pane.on{display:block;}
+
+/* ── COMPONENTS ── */
+.card{background:var(--bg-primary);border-radius:var(--radius-lg);border:0.5px solid var(--border-light);padding:12px;margin-bottom:9px;}
+.fl{margin-bottom:7px;}
+.fl label{font-size:11px;color:var(--text-secondary);display:block;margin-bottom:2px;}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--text-primary);margin:9px 0 6px;display:flex;align-items:center;gap:4px;}
+.divider{border:none;border-top:0.5px solid var(--border-light);margin:8px 0;}
+
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:10px;}
+.tbtn{padding:8px 4px;border:0.5px solid var(--border-light);border-radius:var(--radius-md);background:var(--bg-primary);text-align:center;font-size:10px;color:var(--text-secondary);}
+.tbtn i{display:block;font-size:15px;margin-bottom:2px;}
+.tbtn.sel{border:1.5px solid var(--text-primary);color:var(--text-primary);background:var(--bg-secondary);}
+
+.pbtn{width:100%;padding:10px;background:var(--text-primary);color:var(--bg-primary);border:none;border-radius:var(--radius-md);font-size:13px;font-weight:600;margin-top:8px;}
+.sbtn{width:100%;padding:8px;background:none;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);font-size:11px;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;gap:4px;margin-top:5px;}
+
+/* tags */
+.tag{display:inline-block;font-size:10px;padding:2px 6px;border-radius:20px;margin-top:3px;margin-right:2px;}
+.t-미팅{background:#E6F1FB;color:#0C447C;}.t-통화{background:#EAF3DE;color:#27500A;}
+.t-이메일{background:#FAEEDA;color:#633806;}.t-견적{background:#EEEDFE;color:#3C3489;}
+.t-제안서{background:#FBEAF0;color:#72243E;}.t-제출파일{background:#E1F5EE;color:#085041;}
+.has-min{display:inline-flex;align-items:center;gap:2px;font-size:10px;background:#EAF3DE;color:#27500A;padding:2px 6px;border-radius:20px;margin-top:3px;margin-right:2px;}
+.has-card{display:inline-flex;align-items:center;gap:2px;font-size:10px;background:#EEEDFE;color:#3C3489;padding:2px 6px;border-radius:20px;margin-top:3px;margin-right:2px;}
+
+/* feed */
+.feed-item{background:var(--bg-primary);border-radius:var(--radius-lg);border:0.5px solid var(--border-light);margin-bottom:9px;overflow:hidden;}
+.feed-hdr{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:0.5px solid var(--border-light);}
+.feed-body{padding:9px 12px;}
+.feed-foot{padding:5px 12px;border-top:0.5px solid var(--border-light);display:flex;gap:10px;}
+.feed-btn{background:none;border:none;font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:3px;padding:4px 0;}
+.live-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:#EAF3DE;color:#27500A;padding:2px 8px;border-radius:20px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#639922;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* comments */
+.comment-item{display:flex;gap:6px;margin-bottom:6px;}
+.c-avatar{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0;}
+.c-meta{font-size:10px;color:var(--text-tertiary);margin-bottom:1px;}
+.c-text{font-size:11px;color:var(--text-primary);line-height:1.5;}
+.cmt-row{display:flex;gap:5px;margin-top:8px;align-items:flex-end;}
+.cmt-row textarea{font-size:11px;height:32px;flex:1;}
+.cmt-send{background:var(--text-primary);color:var(--bg-primary);border:none;border-radius:var(--radius-md);padding:6px 10px;font-size:11px;flex-shrink:0;}
+
+/* contact cards */
+.add-row{display:flex;align-items:center;gap:5px;padding:8px 10px;border:0.5px dashed var(--border-mid);border-radius:var(--radius-md);font-size:11px;color:var(--text-secondary);margin-bottom:6px;}
+.cform{background:var(--bg-secondary);border-radius:var(--radius-md);padding:9px;margin-bottom:7px;border:0.5px solid var(--border-mid);}
+
+/* scan */
+.scan-zone{border:0.5px dashed var(--border-mid);border-radius:var(--radius-md);overflow:hidden;margin-bottom:8px;}
+.scan-btns{display:flex;}
+.scan-half{flex:1;padding:14px 8px;text-align:center;border:none;background:var(--bg-secondary);font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;align-items:center;gap:4px;}
+.scan-half:first-child{border-right:0.5px solid var(--border-light);}
+.scan-half i{font-size:22px;color:var(--text-tertiary);}
+.ai-preview{background:var(--bg-secondary);border-radius:var(--radius-md);padding:10px;margin-bottom:8px;border:0.5px solid var(--border-mid);}
+.ai-phdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.ai-ptitle{font-size:11px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:4px;}
+.ai-edit-btn{background:none;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);padding:3px 7px;font-size:10px;color:var(--text-secondary);}
+.pfield{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:0.5px solid var(--border-light);}
+.pfield:last-child{border-bottom:none;}
+.pfield-icon{width:18px;text-align:center;flex-shrink:0;color:var(--text-tertiary);font-size:12px;}
+.pfield-lbl{font-size:10px;color:var(--text-tertiary);width:44px;flex-shrink:0;}
+.pfield-val{font-size:12px;color:var(--text-primary);flex:1;min-width:0;}
+.pfield-input{font-size:12px;flex:1;min-width:0;border:0.5px solid var(--border-mid);border-radius:4px;padding:2px 6px;background:var(--bg-primary);color:var(--text-primary);width:100%;}
+.conf{font-size:10px;padding:1px 5px;border-radius:20px;flex-shrink:0;}
+.ch{background:#EAF3DE;color:#27500A;}.cm{background:#FAEEDA;color:#633806;}.cl{background:#FCEBEB;color:#A32D2D;}
+.prog-bar{height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;margin:6px 0;}
+.prog-fill{height:100%;background:#534AB7;border-radius:2px;transition:width 0.3s;}
+
+/* calendar */
+.cal-grid{background:var(--bg-primary);border-radius:var(--radius-lg);border:0.5px solid var(--border-light);overflow:hidden;margin-bottom:9px;}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:0.5px solid var(--border-light);}
+.cal-dow span{text-align:center;font-size:10px;color:var(--text-tertiary);padding:5px 0;}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);}
+.cday{min-height:38px;border-right:0.5px solid var(--border-light);border-bottom:0.5px solid var(--border-light);padding:3px;cursor:pointer;}
+.cday:nth-child(7n){border-right:none;}
+.cday.empty{background:var(--bg-tertiary);}
+.cday.today .cnum{background:var(--text-primary);color:var(--bg-primary);border-radius:50%;}
+.cday.sel{background:#E6F1FB;}
+.cnum{font-size:10px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}
+.cnum.sun{color:#E24B4A;}
+.cdots{display:flex;gap:2px;flex-wrap:wrap;margin-top:1px;}
+.cdot{width:4px;height:4px;border-radius:50%;}
+.day-panel{background:var(--bg-primary);border-radius:var(--radius-lg);border:0.5px solid var(--border-light);padding:10px 12px;}
+
+/* client list */
+.cli-card{background:var(--bg-primary);border-radius:var(--radius-lg);border:0.5px solid var(--border-light);margin-bottom:8px;overflow:hidden;cursor:pointer;}
+
+/* stats */
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:9px;}
+.scard{background:var(--bg-secondary);border-radius:var(--radius-md);padding:10px;}
+
+/* modal overlay */
+.overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;}
+.modal{background:var(--bg-primary);border-radius:var(--radius-xl);width:100%;max-width:400px;overflow:hidden;margin:auto;}
+.modal-hdr{padding:10px 13px;border-bottom:0.5px solid var(--border-light);display:flex;justify-content:space-between;align-items:center;}
+.modal-body{padding:13px;max-height:70vh;overflow-y:auto;}
+.xbtn{background:none;border:none;font-size:16px;color:var(--text-secondary);padding:2px 4px;}
+
+.empty-state{text-align:center;padding:32px 16px;color:var(--text-tertiary);font-size:12px;}
+.empty-state i{font-size:28px;display:block;margin-bottom:8px;}
+.dg-lbl{font-size:10px;color:var(--text-tertiary);margin:7px 0 3px;font-weight:500;}
+.toast-wrap{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;}
+.toast{background:var(--text-primary);color:var(--bg-primary);padding:8px 18px;border-radius:24px;font-size:12px;white-space:nowrap;opacity:0;transition:opacity 0.25s;box-shadow:0 4px 16px rgba(0,0,0,0.18);}
+.toast.show{opacity:1;}
+
+.chip-bar{display:flex;gap:4px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px;}
+.chip-bar::-webkit-scrollbar{display:none;}
+.chip{padding:4px 10px;border-radius:20px;font-size:11px;border:0.5px solid var(--border-light);background:var(--bg-primary);color:var(--text-secondary);white-space:nowrap;}
+.chip.on{background:var(--text-primary);color:var(--bg-primary);}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div>
+        <div class="hdr-title"><i class="ti ti-briefcase" style="font-size:12px;vertical-align:-2px;margin-right:3px;"></i>이피캠텍 국내외영업팀</div>
+        <div class="hdr-sub">영업 활동 관리 시스템</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+        <div class="user-pill" onclick="cycleUser()"><i class="ti ti-user" style="font-size:11px;"></i><span id="cur-user-lbl">김영업</span></div>
+        <div class="gcal-pill" id="gcal-pill" onclick="toggleGcal()"><i class="ti ti-brand-google" style="font-size:11px;"></i><span id="gcal-lbl">캘린더 연동</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab on" onclick="go('feed')"><i class="ti ti-layout-list" style="font-size:11px;"></i><br>피드</div>
+    <div class="tab" onclick="go('log')"><i class="ti ti-plus" style="font-size:11px;"></i><br>기록</div>
+    <div class="tab" onclick="go('clients')"><i class="ti ti-building" style="font-size:11px;"></i><br>고객사</div>
+    <div class="tab" onclick="go('cal')"><i class="ti ti-calendar" style="font-size:11px;"></i><br>캘린더</div>
+    <div class="tab" onclick="go('stats')"><i class="ti ti-chart-bar" style="font-size:11px;"></i><br>통계</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- 피드 -->
+    <div id="pane-feed" class="pane on">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;">
+        <span style="font-size:13px;font-weight:600;color:var(--text-primary);">팀 영업 피드</span>
+        <span class="live-badge"><span class="live-dot"></span>실시간 공유</span>
+      </div>
+      <div id="feed-list"></div>
+    </div>
+
+    <!-- 기록 -->
+    <div id="pane-log" class="pane">
+      <div class="card">
+        <div class="type-grid">
+          <button class="tbtn sel" onclick="selT(this,'미팅')"><i class="ti ti-users"></i>고객 미팅</button>
+          <button class="tbtn" onclick="selT(this,'통화')"><i class="ti ti-phone"></i>전화/통화</button>
+          <button class="tbtn" onclick="selT(this,'이메일')"><i class="ti ti-mail"></i>이메일 발송</button>
+          <button class="tbtn" onclick="selT(this,'견적')"><i class="ti ti-file-invoice"></i>견적</button>
+          <button class="tbtn" onclick="selT(this,'제안서')"><i class="ti ti-file-description"></i>제안서</button>
+          <button class="tbtn" onclick="selT(this,'제출파일')"><i class="ti ti-file-upload"></i>제출파일</button>
+        </div>
+        <div class="row2">
+          <div class="fl"><label>날짜</label><input type="date" id="l-date"/></div>
+          <div class="fl"><label>고객사</label><select id="l-csel" onchange="onCsel()"><option value="">-- 선택 --</option></select></div>
+        </div>
+        <div class="fl"><label>직접 입력</label><input type="text" id="l-client" placeholder="또는 직접 입력"/></div>
+        <div id="l-color-bar" style="display:none;height:3px;border-radius:2px;margin-bottom:7px;"></div>
+        <div class="fl"><label>메모</label><textarea id="l-memo" placeholder="내용 메모..." style="height:48px;"></textarea></div>
+        <div id="gcal-row" style="display:none;margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;color:var(--text-secondary);">
+            <div id="g-toggle" onclick="tSync()" style="width:30px;height:17px;border-radius:9px;background:#378ADD;position:relative;flex-shrink:0;">
+              <div id="g-dot" style="width:11px;height:11px;border-radius:50%;background:#fff;position:absolute;top:3px;left:16px;transition:left 0.15s;"></div>
+            </div>
+            <i class="ti ti-brand-google" style="color:#378ADD;font-size:11px;"></i> 구글 캘린더 등록
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="sec-lbl"><i class="ti ti-id-badge-2" style="font-size:12px;color:#534AB7;"></i>담당자 등록 <span style="font-size:10px;color:var(--text-tertiary);font-weight:400;">명함 스캔 또는 직접 입력</span></div>
+
+        <!-- 명함 스캔 -->
+        <div class="scan-zone" id="scan-zone">
+          <div class="scan-btns">
+            <button class="scan-half" onclick="document.getElementById('card-cam').click()">
+              <i class="ti ti-camera"></i>
+              <span style="font-size:11px;font-weight:600;">카메라 촬영</span>
+              <span style="font-size:10px;color:var(--text-tertiary);">명함을 찍어주세요</span>
+            </button>
+            <button class="scan-half" onclick="document.getElementById('card-gal').click()">
+              <i class="ti ti-photo"></i>
+              <span style="font-size:11px;font-weight:600;">갤러리 선택</span>
+              <span style="font-size:10px;color:var(--text-tertiary);">사진 불러오기</span>
+            </button>
+          </div>
+          <input type="file" id="card-cam" accept="image/*" capture="environment" style="display:none;" onchange="onCardImage(this)"/>
+          <input type="file" id="card-gal" accept="image/*" style="display:none;" onchange="onCardImage(this)"/>
+        </div>
+
+        <div id="ai-prog-area" style="display:none;">
+          <div class="ai-preview">
+            <div style="text-align:center;padding:10px 0;">
+              <i class="ti ti-scan" style="font-size:22px;color:#534AB7;"></i>
+              <div style="font-size:11px;color:var(--text-secondary);margin:5px 0;" id="ai-step">명함 이미지 분석 중...</div>
+              <div class="prog-bar"><div class="prog-fill" id="ai-prog" style="width:0%;"></div></div>
+              <div style="font-size:10px;color:var(--text-tertiary);" id="ai-pct">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ai-result-area" style="display:none;">
+          <div class="ai-preview">
+            <div class="ai-phdr">
+              <div class="ai-ptitle"><i class="ti ti-sparkles" style="font-size:12px;color:#534AB7;"></i>AI 인식 결과 <span style="font-size:10px;font-weight:400;color:var(--text-tertiary);">수정 후 등록</span></div>
+              <button class="ai-edit-btn" id="edit-btn" onclick="toggleEdit()"><i class="ti ti-edit" style="font-size:10px;vertical-align:-1px;"></i> 수정</button>
+            </div>
+            <div id="ai-view"></div>
+            <div id="ai-edit" style="display:none;"></div>
+            <div style="display:flex;gap:6px;margin-top:9px;">
+              <button onclick="confirmContact()" style="flex:1;padding:8px;background:#534AB7;color:#fff;border:none;border-radius:var(--radius-md);font-size:12px;font-weight:600;"><i class="ti ti-check" style="font-size:11px;vertical-align:-1px;"></i> 담당자로 등록</button>
+              <button onclick="resetScan()" style="padding:8px 11px;background:none;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);font-size:11px;color:var(--text-secondary);"><i class="ti ti-refresh" style="font-size:11px;"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="contact-list"></div>
+        <div id="cform-area"></div>
+        <div class="add-row" onclick="showCForm()"><i class="ti ti-pencil" style="font-size:12px;"></i> 직접 입력으로 담당자 추가</div>
+        <button class="pbtn" onclick="addAct()">활동 기록 + 팀 피드 공유</button>
+      </div>
+    </div>
+
+    <!-- 고객사 -->
+    <div id="pane-clients" class="pane">
+      <div class="fl"><input type="text" id="cli-search" placeholder="고객사 검색..." oninput="renderClients()"/></div>
+      <div id="client-wrap"></div>
+    </div>
+
+    <!-- 캘린더 -->
+    <div id="pane-cal" class="pane">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;">
+        <span style="font-size:13px;font-weight:600;color:var(--text-primary);" id="cal-lbl"></span>
+        <div style="display:flex;gap:4px;">
+          <button onclick="mCal(-1)" style="background:none;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);padding:3px 8px;font-size:11px;color:var(--text-secondary);"><i class="ti ti-chevron-left"></i></button>
+          <button onclick="mCal(1)" style="background:none;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);padding:3px 8px;font-size:11px;color:var(--text-secondary);"><i class="ti ti-chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-dow"><span style="color:#E24B4A;">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span style="color:#378ADD;">토</span></div>
+        <div class="cal-days" id="cal-days"></div>
+      </div>
+      <div id="day-panel" class="day-panel"><div style="font-size:11px;color:var(--text-tertiary);text-align:center;padding:10px;">날짜를 선택하세요</div></div>
+    </div>
+
+    <!-- 통계 -->
+    <div id="pane-stats" class="pane">
+      <div class="sgrid" id="sgrid"></div>
+      <div class="card" style="margin-bottom:9px;">
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">고객사별 활동</div>
+        <div id="client-bar"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">팀원별 활동</div>
+        <div id="user-bar"></div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+</div><!-- /app-shell -->
+
+<div id="modal-area"></div>
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+const TYPES=['미팅','통화','이메일','견적','제안서','제출파일'];
+const TICONS={미팅:'ti-users',통화:'ti-phone',이메일:'ti-mail',견적:'ti-file-invoice',제안서:'ti-file-description',제출파일:'ti-file-upload'};
+const TCOLORS={미팅:'#378ADD',통화:'#639922',이메일:'#BA7517',견적:'#534AB7',제안서:'#D4537E',제출파일:'#0F6E56'};
+const USERS=[{name:'김영업',color:'#378ADD',bg:'#E6F1FB'},{name:'이대리',color:'#639922',bg:'#EAF3DE'},{name:'박차장',color:'#D4537E',bg:'#FBEAF0'},{name:'최과장',color:'#BA7517',bg:'#FAEEDA'}];
+const CP={
+  'Samsung SDI':{shades:['#E3F2FD','#BBDEFB','#90CAF9','#64B5F6','#42A5F5'],text:'#0D47A1',border:'#90CAF9'},
+  'SK On':{shades:['#FFEBEE','#FFCDD2','#EF9A9A','#E57373','#EF5350'],text:'#B71C1C',border:'#EF9A9A'},
+  'LG Energy Solution':{shades:['#FCE4EC','#F8BBD0','#F48FB1','#F06292','#EC407A'],text:'#880E4F',border:'#F48FB1'},
+  '덕산일렉테라':{shades:['#E8F5E9','#C8E6C9','#A5D6A7','#81C784','#66BB6A'],text:'#1B5E20',border:'#A5D6A7'},
+  '동화일렉트로라이트':{shades:['#FFFDE7','#FFF9C4','#FFF59D','#FFF176','#FFEE58'],text:'#F57F17',border:'#FFF176'},
+  '엔켐':{shades:['#F3E5F5','#E1BEE7','#CE93D8','#BA68C8','#AB47BC'],text:'#4A148C',border:'#CE93D8'},
+  '솔브레인':{shades:['#E0F2F1','#B2DFDB','#80CBC4','#4DB6AC','#26A69A'],text:'#004D40',border:'#80CBC4'},
+  'MUIS':{shades:['#FBE9E7','#FFCCBC','#FFAB91','#FF8A65','#FF7043'],text:'#BF360C',border:'#FFAB91'},
+  'Central Glass':{shades:['#ECEFF1','#CFD8DC','#B0BEC5','#90A4AE','#78909C'],text:'#263238',border:'#B0BEC5'},
+  'Panasonic':{shades:['#E8EAF6','#C5CAE9','#9FA8DA','#7986CB','#5C6BC0'],text:'#1A237E',border:'#9FA8DA'},
+  'Tesla':{shades:['#FFEBEE','#FFCDD2','#E57373','#EF5350','#F44336'],text:'#B71C1C',border:'#E57373'},
+};
+const DP={shades:['#F5F5F5','#EEEEEE','#E0E0E0','#BDBDBD','#9E9E9E'],text:'#424242',border:'#E0E0E0'};
+const ALL_CLIENTS=Object.keys(CP);
+const DEMO_CARDS=[
+  {name:'이준혁',title:'부장',dept:'배터리영업팀',company:'Samsung SDI',tel:'010-3421-7782',email:'jh.lee@samsungsdi.com',address:'경기 수원시 영통구',confidence:{name:'high',title:'high',dept:'high',company:'high',tel:'high',email:'high',address:'med'}},
+  {name:'田中 誠',title:'Senior Manager',dept:'Electrolyte Division',company:'Central Glass',tel:'+81-3-5821-4400',email:'m.tanaka@cgco.co.jp',address:'1-8 Marunouchi, Tokyo',confidence:{name:'high',title:'high',dept:'med',company:'high',tel:'high',email:'high',address:'med'}},
+  {name:'박수연',title:'연구원',dept:'전지소재연구소',company:'LG Energy Solution',tel:'010-9934-2210',email:'sy.park@lgensol.com',address:'충북 청주시',confidence:{name:'high',title:'high',dept:'high',company:'high',tel:'high',email:'high',address:'high'}},
+  {name:'김태호',title:'과장',dept:'구매팀',company:'SK On',tel:'010-4567-8901',email:'th.kim@skon.com',address:'서울 종로구',confidence:{name:'high',title:'high',dept:'med',company:'high',tel:'high',email:'med',address:'low'}},
+];
+const FIELD_DEFS=[
+  {k:'name',label:'성함',icon:'ti-user'},{k:'title',label:'직급',icon:'ti-award'},
+  {k:'dept',label:'팀/부서',icon:'ti-building'},{k:'company',label:'회사',icon:'ti-briefcase'},
+  {k:'tel',label:'연락처',icon:'ti-phone'},{k:'email',label:'이메일',icon:'ti-mail'},
+  {k:'address',label:'주소',icon:'ti-map-pin'},
+];
+const CLIENT_INFO={
+  'Samsung SDI':{hq:'수원, 대한민국',founded:'1970',employees:'30,000+',products:'각형·원형·파우치 전지',plants:'천안, 울산, 헝가리, 미국',capacity:'200GWh(2025)',tier:'고객사 Tier 1',website:'www.samsungsdi.com',note:''},
+  'SK On':{hq:'서울, 대한민국',founded:'2021',employees:'6,000+',products:'파우치형 EV 배터리',plants:'충주, 서산, 조지아, 헝가리',capacity:'140GWh(2025)',tier:'고객사 Tier 1',website:'www.sk.com/sk-on',note:''},
+  'LG Energy Solution':{hq:'서울, 대한민국',founded:'2020',employees:'25,000+',products:'파우치·원통형 배터리',plants:'오창, 폴란드, 미시간',capacity:'260GWh(2025)',tier:'고객사 Tier 1',website:'www.lgenergysolution.com',note:''},
+  '덕산일렉테라':{hq:'충남 천안',founded:'2006',employees:'500+',products:'전해질 첨가제, 전해액',plants:'천안',capacity:'연 1,000톤',tier:'공급사 Tier 2',website:'www.duksan.com',note:''},
+  '동화일렉트로라이트':{hq:'경기 안양',founded:'2009',employees:'700+',products:'리튬이온 전해액',plants:'안양, 오창',capacity:'연 8만 톤',tier:'공급사 Tier 2',website:'www.donghwaelec.com',note:''},
+  '엔켐':{hq:'대전',founded:'2012',employees:'400+',products:'EV·ESS 전해액',plants:'대전, 미국, 헝가리',capacity:'연 10만 톤(글로벌)',tier:'공급사 Tier 2',website:'www.enchem.co.kr',note:''},
+  '솔브레인':{hq:'경기 성남',founded:'2000',employees:'2,000+',products:'전해액, 반도체 소재',plants:'세종, 구미',capacity:'연 5만 톤',tier:'공급사 Tier 2',website:'www.soulbrain.co.kr',note:''},
+  'MUIS':{hq:'도쿄, 일본',founded:'1995',employees:'300+',products:'전해질 원료, LiPF₆',plants:'일본 국내',capacity:'비공개',tier:'공급사 Tier 2 (JP)',website:'www.muis.co.jp',note:''},
+  'Central Glass':{hq:'야마구치, 일본',founded:'1936',employees:'3,500+',products:'LiPF₆, 전해질 원료',plants:'일본, 중국',capacity:'연 1만 톤',tier:'공급사 Tier 2 (JP)',website:'www.central-glass.co.jp',note:''},
+  'Panasonic':{hq:'오사카, 일본',founded:'1918',employees:'240,000+',products:'원통형 배터리, EV용',plants:'일본, 미국 Nevada',capacity:'연 50GWh',tier:'고객사 Tier 1',website:'www.panasonic.com',note:''},
+  'Tesla':{hq:'텍사스, 미국',founded:'2003',employees:'120,000+',products:'EV, ESS, 4680 배터리',plants:'Fremont, Austin, Berlin, Shanghai',capacity:'연 100GWh',tier:'고객사 Tier 1',website:'www.tesla.com',note:''},
+};
+
+function gcp(n){if(!n)return DP;if(CP[n])return CP[n];for(const k of Object.keys(CP))if(n.includes(k)||k.includes(n))return CP[k];return DP;}
+function lum(h){try{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return 0.299*r+0.587*g+0.114*b;}catch(e){return 200;}}
+
+let acts=[],tempContacts=[],curType='미팅',gcalOn=false,gcalSync=true,curUserIdx=0;
+let calY,calM,selDate,cformOpen=false,isEditMode=false,scannedData=null,demoIdx=0;
+const now=new Date();calY=now.getFullYear();calM=now.getMonth();
+try{acts=JSON.parse(localStorage.getItem('epc_v8')||'[]');}catch(e){}
+function save(){try{localStorage.setItem('epc_v8',JSON.stringify(acts));}catch(e){}}
+
+document.getElementById('l-date').value=now.toISOString().slice(0,10);
+
+const csel=document.getElementById('l-csel');
+ALL_CLIENTS.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;csel.appendChild(o);});
+
+function onCsel(){const v=csel.value;if(v){document.getElementById('l-client').value=v;showCBar(v);}}
+function showCBar(n){const p=gcp(n);const el=document.getElementById('l-color-bar');el.style.display='block';el.style.background=p.shades[2];el.style.borderLeft='4px solid '+p.border;}
+document.getElementById('l-client').addEventListener('input',function(){this.value?showCBar(this.value):document.getElementById('l-color-bar').style.display='none';});
+
+function selT(btn,t){document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');curType=t;}
+function toggleGcal(){gcalOn=!gcalOn;document.getElementById('gcal-pill').classList.toggle('on',gcalOn);document.getElementById('gcal-lbl').textContent=gcalOn?'연동됨':'캘린더 연동';document.getElementById('gcal-row').style.display=gcalOn?'block':'none';toast(gcalOn?'구글 캘린더 연동':'연동 해제');}
+function tSync(){gcalSync=!gcalSync;document.getElementById('g-dot').style.left=gcalSync?'16px':'3px';document.getElementById('g-toggle').style.background=gcalSync?'#378ADD':'#ccc';}
+function cycleUser(){curUserIdx=(curUserIdx+1)%USERS.length;document.getElementById('cur-user-lbl').textContent=USERS[curUserIdx].name;toast(USERS[curUserIdx].name+'으로 전환');}
+function curUser(){return USERS[curUserIdx];}
+
+/* ── 명함 AI 스캔 ── */
+function onCardImage(inp){
+  if(!inp.files||!inp.files[0])return;
+  const reader=new FileReader();
+  reader.onload=()=>startAI();
+  reader.readAsDataURL(inp.files[0]);
+}
+function startAI(){
+  document.getElementById('ai-prog-area').style.display='block';
+  document.getElementById('ai-result-area').style.display='none';
+  document.getElementById('scan-zone').style.display='none';
+  let p=0,si=0;
+  const steps=['이미지 전처리 중...','텍스트 영역 감지 중...','OCR 문자 인식 중...','필드 분류 AI 적용 중...','완료!'];
+  const iv=setInterval(()=>{
+    p+=Math.floor(Math.random()*16)+7;if(p>99)p=99;
+    document.getElementById('ai-prog').style.width=p+'%';
+    document.getElementById('ai-pct').textContent=p+'%';
+    if(si<steps.length-1&&p>si*23){document.getElementById('ai-step').textContent=steps[si];si++;}
+  },420);
+  setTimeout(()=>{
+    clearInterval(iv);
+    document.getElementById('ai-prog').style.width='100%';
+    document.getElementById('ai-pct').textContent='100%';
+    document.getElementById('ai-step').textContent='완료!';
+    setTimeout(()=>{
+      document.getElementById('ai-prog-area').style.display='none';
+      scannedData=JSON.parse(JSON.stringify(DEMO_CARDS[demoIdx%DEMO_CARDS.length]));
+      demoIdx++;
+      renderAIFields(false);
+      document.getElementById('ai-result-area').style.display='block';
+      isEditMode=false;
+    },300);
+  },2600);
+}
+function confCls(c){return c==='high'?'ch':c==='med'?'cm':'cl';}
+function confLbl(c){return c==='high'?'정확':c==='med'?'보통':'확인';}
+function renderAIFields(editMode){
+  const d=scannedData;
+  const view=document.getElementById('ai-view');
+  const edit=document.getElementById('ai-edit');
+  if(!editMode){
+    view.style.display='block';edit.style.display='none';
+    view.innerHTML=FIELD_DEFS.map(f=>{
+      const c=d.confidence?d.confidence[f.k]:'high';
+      return `<div class="pfield"><div class="pfield-icon"><i class="ti ${f.icon}"></i></div><div class="pfield-lbl">${f.label}</div><div class="pfield-val">${d[f.k]||'—'}</div><span class="conf ${confCls(c)}">${confLbl(c)}</span></div>`;
+    }).join('');
+    document.getElementById('edit-btn').innerHTML='<i class="ti ti-edit" style="font-size:10px;vertical-align:-1px;"></i> 수정';
+  } else {
+    view.style.display='none';edit.style.display='block';
+    edit.innerHTML=FIELD_DEFS.map(f=>`<div class="pfield"><div class="pfield-icon"><i class="ti ${f.icon}"></i></div><div class="pfield-lbl">${f.label}</div><input class="pfield-input" id="ef-${f.k}" value="${(d[f.k]||'').replace(/"/g,'&quot;')}"/></div>`).join('');
+    document.getElementById('edit-btn').innerHTML='<i class="ti ti-check" style="font-size:10px;vertical-align:-1px;"></i> 확인';
+  }
+}
+function toggleEdit(){
+  isEditMode=!isEditMode;
+  if(!isEditMode)FIELD_DEFS.forEach(f=>{const el=document.getElementById('ef-'+f.k);if(el)scannedData[f.k]=el.value;});
+  renderAIFields(isEditMode);
+}
+function confirmContact(){
+  if(isEditMode)FIELD_DEFS.forEach(f=>{const el=document.getElementById('ef-'+f.k);if(el)scannedData[f.k]=el.value;});
+  if(!scannedData.name){toast('성함이 인식되지 않았습니다');return;}
+  tempContacts.push({name:scannedData.name,title:scannedData.title||'',dept:scannedData.dept||'',email:scannedData.email||'',tel:scannedData.tel||'',fromCard:true});
+  renderContacts();resetScan();toast(scannedData.name+' 등록 완료 ✓');
+  if(scannedData.company&&!document.getElementById('l-client').value){
+    const m=ALL_CLIENTS.find(n=>n.includes(scannedData.company)||scannedData.company.includes(n));
+    const val=m||scannedData.company;
+    document.getElementById('l-client').value=val;
+    if(m)document.getElementById('l-csel').value=m;
+    showCBar(val);
+  }
+}
+function resetScan(){
+  document.getElementById('scan-zone').style.display='block';
+  document.getElementById('ai-prog-area').style.display='none';
+  document.getElementById('ai-result-area').style.display='none';
+  document.getElementById('card-cam').value='';
+  document.getElementById('card-gal').value='';
+  scannedData=null;isEditMode=false;
+}
+
+/* ── 담당자 ── */
+function renderContacts(){
+  const el=document.getElementById('contact-list');
+  const cn=document.getElementById('l-client').value||document.getElementById('l-csel').value;
+  const p=gcp(cn);
+  if(!tempContacts.length){el.innerHTML='';return;}
+  el.innerHTML=tempContacts.map((c,i)=>{
+    const sh=p.shades[Math.min(i,p.shades.length-1)];
+    const dk=p.shades[Math.min(i+2,p.shades.length-1)];
+    const tc=lum(sh)>160?p.text:'#fff';
+    return `<div style="background:${sh};border:0.5px solid ${p.border};border-radius:var(--radius-md);margin-bottom:5px;padding:8px 10px;display:flex;align-items:flex-start;gap:7px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:${dk};color:${lum(dk)>160?p.text:'#fff'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;">${(c.name||'?').slice(0,1)}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px;">
+          <span style="font-size:12px;font-weight:600;color:${tc};">${c.name}</span>
+          ${c.title?`<span style="font-size:10px;color:${tc};opacity:0.8;">${c.title}</span>`:''}
+          ${c.dept?`<span style="font-size:10px;color:${tc};opacity:0.7;">${c.dept}</span>`:''}
+          ${c.fromCard?`<span style="font-size:9px;background:#EEEDFE;color:#3C3489;padding:1px 5px;border-radius:20px;"><i class="ti ti-id-badge-2" style="font-size:9px;"></i>명함</span>`:''}
+        </div>
+        ${c.tel?`<div style="font-size:10px;color:${tc};opacity:0.75;"><i class="ti ti-phone" style="font-size:10px;"></i> ${c.tel}</div>`:''}
+        ${c.email?`<div style="font-size:10px;color:${tc};opacity:0.75;"><i class="ti ti-mail" style="font-size:10px;"></i> ${c.email}</div>`:''}
+      </div>
+      <button onclick="delContact(${i})" style="background:none;border:none;color:${tc};opacity:0.5;font-size:13px;padding:2px;"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+function delContact(i){tempContacts.splice(i,1);renderContacts();}
+function showCForm(){
+  if(cformOpen)return;cformOpen=true;
+  document.getElementById('cform-area').innerHTML=`<div class="cform">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:11px;font-weight:600;color:var(--text-primary);">직접 입력</span><button onclick="closeCForm()" style="background:none;border:none;font-size:14px;color:var(--text-tertiary);"><i class="ti ti-x"></i></button></div>
+    <div class="row2"><div class="fl"><label>이름 *</label><input type="text" id="cf-name" placeholder="홍길동"/></div><div class="fl"><label>직급</label><input type="text" id="cf-title" placeholder="부장"/></div></div>
+    <div class="row2"><div class="fl"><label>팀/부서</label><input type="text" id="cf-dept" placeholder="영업팀"/></div><div class="fl"><label>연락처</label><input type="tel" id="cf-tel"/></div></div>
+    <div class="fl"><label>이메일</label><input type="email" id="cf-email"/></div>
+    <button class="pbtn" style="margin-top:5px;" onclick="addContact()"><i class="ti ti-plus" style="font-size:11px;vertical-align:-1px;"></i> 추가</button>
+  </div>`;
+}
+function closeCForm(){cformOpen=false;document.getElementById('cform-area').innerHTML='';}
+function addContact(){
+  const name=document.getElementById('cf-name').value.trim();
+  if(!name){toast('이름을 입력해 주세요');return;}
+  tempContacts.push({name,title:document.getElementById('cf-title').value.trim(),dept:document.getElementById('cf-dept').value.trim(),tel:document.getElementById('cf-tel').value.trim(),email:document.getElementById('cf-email').value.trim(),fromCard:false});
+  closeCForm();renderContacts();
+}
+
+function addAct(){
+  const date=document.getElementById('l-date').value;
+  const manual=document.getElementById('l-client').value.trim();
+  const fromSel=document.getElementById('l-csel').value;
+  const client=manual||fromSel;
+  if(!client){toast('고객사를 입력해 주세요');return;}
+  const memo=document.getElementById('l-memo').value.trim();
+  const scanCount=tempContacts.filter(c=>c.fromCard).length;
+  acts.unshift({id:Date.now(),type:curType,date,client,contacts:[...tempContacts],memo,gcal:gcalOn&&gcalSync,user:curUser().name,comments:[],scanCount});
+  save();
+  document.getElementById('l-client').value='';document.getElementById('l-csel').value='';document.getElementById('l-memo').value='';
+  document.getElementById('l-color-bar').style.display='none';
+  tempContacts=[];renderContacts();resetScan();
+  toast('피드에 공유됐습니다 ✓');go('feed');
+}
+
+function pills(contacts,client){
+  if(!contacts||!contacts.length)return '';
+  const p=gcp(client);
+  return '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;">'+contacts.map((c,i)=>{
+    const sh=p.shades[Math.min(i,p.shades.length-1)];
+    const tc=lum(sh)>160?p.text:'#fff';
+    return `<span style="display:inline-flex;align-items:center;gap:2px;background:${sh};border:0.5px solid ${p.border};border-radius:20px;padding:1px 6px 1px 2px;font-size:10px;color:${tc};">
+      <span style="width:12px;height:12px;border-radius:50%;background:${p.shades[Math.min(i+1,p.shades.length-1)]};display:inline-flex;align-items:center;justify-content:center;font-size:7px;">${(c.name||'?').slice(0,1)}</span>${c.name}${c.fromCard?'<i class="ti ti-id-badge-2" style="font-size:8px;margin-left:1px;"></i>':''}</span>`;
+  }).join('')+'</div>';
+}
+
+/* ── 피드 ── */
+function renderFeed(){
+  const el=document.getElementById('feed-list');
+  if(!acts.length){el.innerHTML='<div class="empty-state"><i class="ti ti-message-circle"></i>아직 활동이 없습니다<br><span style="font-size:10px;margin-top:4px;display:block;">기록 탭에서 첫 활동을 공유해 보세요</span></div>';return;}
+  el.innerHTML=acts.map(a=>{
+    const p=gcp(a.client),u=USERS.find(x=>x.name===a.user)||USERS[0];
+    const d=a.date?new Date(a.date+'T00:00').toLocaleDateString('ko-KR',{month:'numeric',day:'numeric',weekday:'short'}):'';
+    const cmts=a.comments||[];
+    return `<div class="feed-item">
+      <div class="feed-hdr" style="background:${p.shades[0]};">
+        <div style="width:26px;height:26px;border-radius:50%;background:${u.bg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:${u.color};flex-shrink:0;">${u.name.slice(0,1)}</div>
+        <div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:600;color:var(--text-primary);">${u.name} <span style="font-size:10px;font-weight:400;color:var(--text-secondary);">· ${a.type}</span></div><div style="font-size:10px;color:var(--text-tertiary);">${d}</div></div>
+        <div style="display:flex;align-items:center;gap:3px;"><span style="width:7px;height:7px;border-radius:50%;background:${p.border};"></span><span style="font-size:10px;color:${p.text};font-weight:600;">${a.client}</span></div>
+      </div>
+      <div class="feed-body">
+        <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:4px;">
+          <span class="tag t-${a.type}">${a.type}</span>
+          ${(a.scanCount||0)>0?`<span class="has-card"><i class="ti ti-id-badge-2" style="font-size:9px;"></i> 명함 ${a.scanCount}건</span>`:''}
+          ${a.gcal?'<i class="ti ti-brand-google" style="font-size:10px;color:#378ADD;"></i>':''}
+        </div>
+        ${a.memo?`<div style="font-size:12px;color:var(--text-primary);line-height:1.5;margin-bottom:4px;">${a.memo}</div>`:''}
+        ${pills(a.contacts,a.client)}
+        ${cmts.length?`<div style="margin-top:8px;padding-top:6px;border-top:0.5px solid var(--border-light);">
+          ${cmts.map(c=>{const cu=USERS.find(x=>x.name===c.user)||USERS[0];return `<div class="comment-item"><div class="c-avatar" style="background:${cu.bg};color:${cu.color};">${cu.name.slice(0,1)}</div><div><div class="c-meta">${c.user} · ${c.time}</div><div class="c-text">${c.text}</div></div></div>`;}).join('')}
+        </div>`:''}
+        <div class="cmt-row">
+          <textarea id="cmt-${a.id}" placeholder="${curUser().name}으로 댓글..."></textarea>
+          <button class="cmt-send" onclick="addComment(${a.id})"><i class="ti ti-send" style="font-size:11px;"></i></button>
+        </div>
+      </div>
+      <div class="feed-foot">
+        <button class="feed-btn" onclick="openActModal(${a.id})"><i class="ti ti-file-text" style="font-size:11px;"></i> 상세</button>
+        <button class="feed-btn"><i class="ti ti-message-circle" style="font-size:11px;"></i> ${cmts.length}개 댓글</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function addComment(id){
+  const inp=document.getElementById('cmt-'+id);if(!inp||!inp.value.trim())return;
+  const a=acts.find(x=>x.id===id);if(!a)return;
+  if(!a.comments)a.comments=[];
+  a.comments.push({user:curUser().name,text:inp.value.trim(),time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
+  save();renderFeed();toast('댓글 달렸습니다');
+}
+
+/* ── 활동 모달 ── */
+function openActModal(id){
+  const a=acts.find(x=>x.id===id);if(!a)return;
+  const p=gcp(a.client),u=USERS.find(x=>x.name===a.user)||USERS[0];
+  const d=a.date?new Date(a.date+'T00:00').toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'}):'';
+  const cmts=a.comments||[];
+  const contacts=a.contacts||[];
+  document.getElementById('modal-area').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="modal-hdr" style="background:${p.shades[0]};border-color:${p.border};">
+      <div><div style="font-size:12px;font-weight:600;color:${p.text};">${a.client} · ${a.type}</div><div style="font-size:10px;color:${p.text};opacity:0.7;">${d} · ${u.name}</div></div>
+      <button class="xbtn" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      ${a.memo?`<div style="font-size:12px;background:${p.shades[0]};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:9px;margin-bottom:10px;line-height:1.6;color:${p.text};">${a.memo}</div>`:''}
+      ${contacts.length?`<div style="margin-bottom:10px;"><div class="sec-lbl" style="margin-top:0;"><i class="ti ti-id-badge-2" style="font-size:11px;color:#534AB7;"></i>담당자</div>
+        ${contacts.map((c,i)=>{const sh=p.shades[Math.min(i,p.shades.length-1)];const dk=p.shades[Math.min(i+2,p.shades.length-1)];const tc=lum(sh)>160?p.text:'#fff';return `<div style="background:${sh};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:8px 10px;margin-bottom:5px;display:flex;align-items:flex-start;gap:7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:${dk};color:${lum(dk)>160?p.text:'#fff'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">${(c.name||'?').slice(0,1)}</div>
+          <div><div style="font-size:12px;font-weight:600;color:${tc};display:flex;align-items:center;gap:4px;">${c.name}<span style="font-size:10px;font-weight:400;">${c.title||''}</span>${c.fromCard?`<span style="font-size:9px;background:#EEEDFE;color:#3C3489;padding:1px 4px;border-radius:20px;"><i class="ti ti-id-badge-2" style="font-size:9px;"></i></span>`:''}</div>
+          ${c.dept?`<div style="font-size:11px;color:${tc};opacity:0.7;">${c.dept}</div>`:''}
+          ${c.tel?`<div style="font-size:10px;color:${tc};opacity:0.7;"><i class="ti ti-phone" style="font-size:10px;"></i> ${c.tel}</div>`:''}
+          ${c.email?`<div style="font-size:10px;color:${tc};opacity:0.7;"><i class="ti ti-mail" style="font-size:10px;"></i> ${c.email}</div>`:''}
+          </div></div>`;}).join('')}
+      </div>`:''}
+      <div class="sec-lbl"><i class="ti ti-message-circle" style="font-size:11px;"></i>팀 댓글 (${cmts.length})</div>
+      ${cmts.length?cmts.map(c=>{const cu=USERS.find(x=>x.name===c.user)||USERS[0];return `<div class="comment-item" style="margin-bottom:7px;"><div class="c-avatar" style="background:${cu.bg};color:${cu.color};">${cu.name.slice(0,1)}</div><div><div class="c-meta">${c.user} · ${c.time}</div><div class="c-text">${c.text}</div></div></div>`;}).join(''):'<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:7px;">첫 댓글을 달아보세요</div>'}
+      <div class="cmt-row">
+        <textarea id="mcmt-${a.id}" placeholder="${curUser().name}으로 댓글..."></textarea>
+        <button class="cmt-send" onclick="addCommentModal(${a.id})"><i class="ti ti-send" style="font-size:11px;"></i></button>
+      </div>
+    </div>
+  </div></div>`;
+}
+function addCommentModal(id){
+  const inp=document.getElementById('mcmt-'+id);if(!inp||!inp.value.trim())return;
+  const a=acts.find(x=>x.id===id);if(!a)return;
+  if(!a.comments)a.comments=[];
+  a.comments.push({user:curUser().name,text:inp.value.trim(),time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
+  save();closeModal();renderFeed();toast('댓글 달렸습니다');
+}
+
+/* ── 고객사 ── */
+function renderClients(){
+  const q=(document.getElementById('cli-search').value||'').toLowerCase();
+  const wrap=document.getElementById('client-wrap');
+  const filtered=ALL_CLIENTS.filter(n=>!q||n.toLowerCase().includes(q));
+  wrap.innerHTML=filtered.map(name=>{
+    const p=gcp(name),compActs=acts.filter(a=>a.client===name||a.client.includes(name));
+    const allC=[];compActs.forEach(a=>(a.contacts||[]).forEach(c=>{if(!allC.find(x=>x.name===c.name))allC.push(c);}));
+    const cardC=allC.filter(c=>c.fromCard).length;
+    const ini=name.replace(/[^A-Za-z가-힣]/g,'').slice(0,2).toUpperCase()||name.slice(0,2);
+    return `<div class="cli-card" onclick="openClientProfile('${name.replace(/'/g,"\\'")}')">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 13px;background:${p.shades[0]};">
+        <div style="width:32px;height:32px;border-radius:50%;background:${p.shades[2]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:${p.text};flex-shrink:0;">${ini}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:${p.text};">${name}</div>
+          <div style="font-size:10px;color:${p.text};opacity:0.7;">담당자 ${allC.length}명${cardC>0?' · 명함 '+cardC+'건':''} · 활동 ${compActs.length}건</div>
+        </div>
+        <i class="ti ti-chevron-right" style="font-size:12px;color:${p.text};opacity:0.4;"></i>
+      </div>
+      ${allC.length?`<div style="padding:5px 13px 9px;display:flex;flex-wrap:wrap;gap:3px;background:${p.shades[0]};border-top:0.5px solid ${p.border};">
+        ${allC.slice(0,5).map((c,i)=>{const sh=p.shades[Math.min(i,p.shades.length-1)];const tc=lum(sh)>160?p.text:'#fff';return `<span style="display:inline-flex;align-items:center;gap:2px;background:${sh};border:0.5px solid ${p.border};border-radius:20px;padding:1px 7px 1px 3px;font-size:10px;color:${tc};">${c.fromCard?'<i class="ti ti-id-badge-2" style="font-size:9px;"></i>':'<i class="ti ti-user" style="font-size:9px;"></i>'} ${c.name}</span>`;}).join('')}
+        ${allC.length>5?`<span style="font-size:10px;color:${p.text};opacity:0.6;padding:3px 0;">+${allC.length-5}</span>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function openClientProfile(name){
+  const p=gcp(name),compActs=acts.filter(a=>a.client===name||a.client.includes(name));
+  const allC=[];compActs.forEach(a=>(a.contacts||[]).forEach(c=>{if(!allC.find(x=>x.name===c.name))allC.push(c);}));
+  const info=CLIENT_INFO[name]||{};
+  const ini=name.replace(/[^A-Za-z가-힣]/g,'').slice(0,2).toUpperCase()||name.slice(0,2);
+  const typeCount={};TYPES.forEach(t=>typeCount[t]=0);compActs.forEach(a=>{if(typeCount[a.type]!==undefined)typeCount[a.type]++;});
+  const iFields=[{k:'hq',l:'본사',ic:'ti-map-pin'},{k:'founded',l:'설립',ic:'ti-calendar'},{k:'employees',l:'임직원',ic:'ti-users'},{k:'products',l:'제품',ic:'ti-package'},{k:'plants',l:'생산거점',ic:'ti-building-factory-2'},{k:'capacity',l:'규모',ic:'ti-chart-bar'},{k:'tier',l:'구분',ic:'ti-tag'},{k:'website',l:'웹사이트',ic:'ti-world'},{k:'note',l:'메모',ic:'ti-notes'}];
+  document.getElementById('modal-area').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="modal-hdr" style="background:${p.shades[0]};border-color:${p.border};">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:${p.shades[2]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:${p.text};">${ini}</div>
+        <div style="font-size:12px;font-weight:600;color:${p.text};">${name}</div>
+      </div>
+      <button class="xbtn" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:11px;">
+        <div style="background:${p.shades[0]};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:9px;"><div style="font-size:10px;color:${p.text};opacity:0.7;margin-bottom:2px;">전체 활동</div><div style="font-size:18px;font-weight:600;color:${p.text};">${compActs.length}</div></div>
+        <div style="background:${p.shades[0]};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:9px;"><div style="font-size:10px;color:${p.text};opacity:0.7;margin-bottom:2px;">명함 스캔</div><div style="font-size:18px;font-weight:600;color:${p.text};">${allC.filter(c=>c.fromCard).length}</div></div>
+      </div>
+      <div style="background:${p.shades[0]};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:10px;margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:600;color:${p.text};margin-bottom:8px;"><i class="ti ti-info-circle" style="font-size:11px;vertical-align:-1px;"></i> 고객사 정보</div>
+        ${iFields.map(f=>`<div style="display:flex;align-items:flex-start;gap:6px;padding:4px 0;border-bottom:0.5px solid ${p.border};"><i class="ti ${f.ic}" style="font-size:11px;color:${p.text};opacity:0.5;flex-shrink:0;margin-top:1px;"></i><span style="font-size:10px;color:${p.text};opacity:0.6;width:40px;flex-shrink:0;">${f.l}</span><span style="font-size:11px;color:${p.text};flex:1;">${info[f.k]||'—'}</span></div>`).join('')}
+      </div>
+      ${allC.length?`<div style="margin-bottom:10px;"><div class="sec-lbl" style="margin-top:0;color:${p.text};"><i class="ti ti-id-badge-2" style="font-size:11px;color:#534AB7;"></i>담당자 이력</div>
+        ${allC.map((c,i)=>{const sh=p.shades[Math.min(i,p.shades.length-1)];const dk=p.shades[Math.min(i+2,p.shades.length-1)];const tc=lum(sh)>160?p.text:'#fff';return `<div style="background:${sh};border:0.5px solid ${p.border};border-radius:var(--radius-md);padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;gap:7px;"><div style="width:24px;height:24px;border-radius:50%;background:${dk};color:${lum(dk)>160?p.text:'#fff'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">${(c.name||'?').slice(0,1)}</div><div><div style="font-size:11px;font-weight:600;color:${tc};">${c.name} ${c.title?`<span style="font-weight:400;font-size:10px;">${c.title}</span>`:''} ${c.fromCard?'<i class="ti ti-id-badge-2" style="font-size:10px;color:#534AB7;"></i>':''}</div>${c.dept?`<div style="font-size:10px;color:${tc};opacity:0.7;">${c.dept}</div>`:''}${c.email||c.tel?`<div style="font-size:10px;color:${tc};opacity:0.65;">${[c.tel,c.email].filter(Boolean).join(' · ')}</div>`:''}</div></div>`;}).join('')}
+      </div>`:''}
+      <div style="margin-bottom:10px;"><div class="sec-lbl" style="margin-top:0;"><i class="ti ti-chart-line" style="font-size:11px;color:${p.border};"></i>영업 현황</div>
+        ${TYPES.map(t=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><span style="font-size:10px;color:var(--text-secondary);width:40px;flex-shrink:0;">${t}</span><div style="flex:1;height:6px;background:${p.shades[1]};border-radius:3px;overflow:hidden;"><div style="width:${compActs.length?Math.round((typeCount[t]||0)/compActs.length*100):0}%;height:100%;background:${TCOLORS[t]};border-radius:3px;"></div></div><span style="font-size:10px;color:var(--text-secondary);width:14px;text-align:right;">${typeCount[t]||0}</span></div>`).join('')}
+      </div>
+      <button class="pbtn" style="background:${p.border};color:${lum(p.border)>160?p.text:'#fff'};" onclick="closeModal();go('log');document.getElementById('l-client').value='${name}';showCBar('${name}');">이 고객사로 활동 기록</button>
+    </div>
+  </div></div>`;
+}
+
+/* ── 캘린더 ── */
+function mCal(d){calM+=d;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
+function renderCal(){
+  document.getElementById('cal-lbl').textContent=`${calY}년 ${calM+1}월`;
+  const first=new Date(calY,calM,1).getDay(),days=new Date(calY,calM+1,0).getDate(),tStr=now.toISOString().slice(0,10);
+  let html='';
+  for(let i=0;i<first;i++)html+=`<div class="cday empty"></div>`;
+  for(let d=1;d<=days;d++){
+    const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const da=acts.filter(a=>a.date===ds),dow=(first+d-1)%7;
+    const dots=[...new Map(da.map(a=>[a.client,a])).values()].slice(0,4).map(a=>`<div class="cdot" style="background:${gcp(a.client).border};"></div>`).join('');
+    html+=`<div class="cday${ds===tStr?' today':''}${ds===selDate?' sel':''}" onclick="selDay('${ds}')"><div class="cnum${dow===0?' sun':''}">${d}</div>${dots?`<div class="cdots">${dots}</div>`:''}</div>`;
+  }
+  document.getElementById('cal-days').innerHTML=html;
+  if(selDate)renderDayPanel(selDate);
+}
+function selDay(ds){selDate=ds;renderCal();renderDayPanel(ds);}
+function renderDayPanel(ds){
+  const el=document.getElementById('day-panel');
+  const da=acts.filter(a=>a.date===ds);
+  const d=new Date(ds+'T00:00').toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});
+  if(!da.length){el.innerHTML=`<div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${d}</div><div style="font-size:11px;color:var(--text-tertiary);text-align:center;padding:8px;">활동 없음</div>`;return;}
+  let html=`<div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:7px;">${d} · ${da.length}건</div>`;
+  da.forEach(a=>{const p=gcp(a.client);html+=`<div style="display:flex;align-items:flex-start;gap:6px;padding:6px 8px;border-radius:var(--radius-md);background:${p.shades[0]};border:0.5px solid ${p.border};margin-bottom:5px;cursor:pointer;" onclick="openActModal(${a.id})"><div style="width:5px;height:5px;border-radius:50%;background:${p.border};flex-shrink:0;margin-top:4px;"></div><div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:600;color:${p.text};">${a.client}</div><div style="font-size:10px;color:${p.text};opacity:0.75;">${a.type} · ${a.user}</div>${pills(a.contacts,a.client)}</div></div>`;});
+  el.innerHTML=html;
+}
+
+/* ── 통계 ── */
+function renderStats(){
+  const total=acts.length,ym=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const thisMonth=acts.filter(a=>a.date&&a.date.startsWith(ym)).length;
+  const totalCmts=acts.reduce((s,a)=>s+(a.comments||[]).length,0);
+  const totalScans=acts.reduce((s,a)=>s+(a.scanCount||0),0);
+  document.getElementById('sgrid').innerHTML=`
+    <div class="scard"><div style="font-size:10px;color:var(--text-secondary);margin-bottom:2px;">전체 활동</div><div style="font-size:20px;font-weight:600;color:var(--text-primary);">${total}</div></div>
+    <div class="scard"><div style="font-size:10px;color:var(--text-secondary);margin-bottom:2px;">이번 달</div><div style="font-size:20px;font-weight:600;color:var(--text-primary);">${thisMonth}</div></div>
+    <div class="scard"><div style="font-size:10px;color:var(--text-secondary);margin-bottom:2px;">팀 댓글</div><div style="font-size:20px;font-weight:600;color:var(--text-primary);">${totalCmts}</div></div>
+    <div class="scard" style="background:#EEEDFE;"><div style="font-size:10px;color:#3C3489;margin-bottom:2px;"><i class="ti ti-id-badge-2" style="font-size:10px;"></i> 명함 스캔</div><div style="font-size:20px;font-weight:600;color:#3C3489;">${totalScans}</div></div>`;
+  const cc={};acts.forEach(a=>{cc[a.client]=(cc[a.client]||0)+1;});
+  const sc=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const maxC=sc.length?sc[0][1]:1;
+  document.getElementById('client-bar').innerHTML=sc.map(([n,cnt])=>{const p=gcp(n);return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;"><span style="font-size:10px;color:var(--text-secondary);width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n}</span><div style="flex:1;height:7px;background:var(--bg-secondary);border-radius:3px;overflow:hidden;"><div style="width:${Math.round(cnt/maxC*100)}%;height:100%;background:${p.border};border-radius:3px;"></div></div><span style="font-size:10px;color:var(--text-secondary);width:14px;text-align:right;">${cnt}</span></div>`;}).join('')||'<div style="font-size:11px;color:var(--text-tertiary);">활동 없음</div>';
+  const uc={};acts.forEach(a=>{uc[a.user||'?']=(uc[a.user||'?']||0)+1;});
+  const su=Object.entries(uc).sort((a,b)=>b[1]-a[1]);
+  const maxU=su.length?su[0][1]:1;
+  document.getElementById('user-bar').innerHTML=su.map(([n,cnt])=>{const u=USERS.find(x=>x.name===n)||{color:'#888'};return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;"><span style="font-size:10px;color:var(--text-secondary);width:44px;flex-shrink:0;">${n}</span><div style="flex:1;height:7px;background:var(--bg-secondary);border-radius:3px;overflow:hidden;"><div style="width:${Math.round(cnt/maxU*100)}%;height:100%;background:${u.color};border-radius:3px;"></div></div><span style="font-size:10px;color:var(--text-secondary);width:14px;text-align:right;">${cnt}</span></div>`;}).join('')||'<div style="font-size:11px;color:var(--text-tertiary);">활동 없음</div>';
+}
+
+/* ── 탭 전환 ── */
+function go(tab){
+  const tabs=['feed','log','clients','cal','stats'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',tabs[i]===tab));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pane-'+tab);if(p)p.classList.add('on');
+  closeModal();
+  if(tab==='feed')renderFeed();
+  if(tab==='clients')renderClients();
+  if(tab==='cal')renderCal();
+  if(tab==='stats')renderStats();
+}
+function closeModal(){document.getElementById('modal-area').innerHTML='';}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* ── INIT ── */
+renderFeed();renderCal();
+</script>
+</body>
+</html>
