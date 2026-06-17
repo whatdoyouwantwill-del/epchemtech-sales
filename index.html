@@ -2069,6 +2069,7 @@ function openLoginSettingsModal(){
       +'</div>'
     +'</div>';
   document.body.appendChild(div);
+  setTimeout(refreshCloudStatus, 100);
 }
 
 /* 헤더 로그아웃 버튼 */
@@ -3823,6 +3824,24 @@ function openDataMgmtModal(){
         +'<div style="font-size:10px;color:var(--tx3);text-align:right;">총 용량: '+sizeKb+' KB / 브라우저 저장</div>'
       +'</div>'
 
+      // 클라우드 동기화 (핵심)
+      +'<div style="background:linear-gradient(135deg,#1D2D44,#4A7C59);border-radius:var(--rl);padding:14px;margin-bottom:12px;">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+          +'<div style="color:#fff;font-size:13px;font-weight:700;">☁️ 클라우드 동기화</div>'
+          +'<button onclick="openCloudSyncSetup()" style="background:rgba(255,255,255,.18);border:none;border-radius:20px;padding:4px 12px;color:#fff;font-size:11px;cursor:pointer;">⚙️ 설정</button>'
+        +'</div>'
+        +'<div id="cloud-sync-status" style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:10px;min-height:16px;"></div>'
+        +'<div style="display:flex;gap:8px;">'
+          +'<button id="cloud-upload-btn" onclick="cloudUpload()" style="flex:1;padding:12px 4px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:var(--rm);color:#fff;font-size:12px;font-weight:600;cursor:pointer;">'
+            +'⬆️ 클라우드<br>업로드'
+          +'</button>'
+          +'<button id="cloud-download-btn" onclick="cloudDownload()" style="flex:1;padding:12px 4px;background:#fff;border:none;border-radius:var(--rm);color:#1D2D44;font-size:12px;font-weight:700;cursor:pointer;">'
+            +'⬇️ 이 기기에<br>복원'
+          +'</button>'
+        +'</div>'
+        +'<div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.5);text-align:center;">jsonbin.io 무료 계정 필요 · 설정은 1회만</div>'
+      +'</div>'
+
       // 내보내기
       +'<div class="backup-card">'
         +'<div class="backup-card-title">'
@@ -3853,6 +3872,17 @@ function openDataMgmtModal(){
       +'</div>'
 
       // 주의 안내
+      +'<div class="backup-card" style="background:linear-gradient(135deg,#E6F1FB,#EAF3DE);border-color:#90CAF9;">'
+      +'<div class="backup-card-title">'
+        +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1D2D44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>'
+        +'<span style="color:#1D2D44;">📱 PC → 휴대폰 동기화 (QR 코드)</span>'
+      +'</div>'
+      +'<div class="backup-card-desc" style="color:#0C447C;">PC 데이터를 QR코드로 휴대폰에 전송합니다.<br>휴대폰 카메라로 스캔하면 자동으로 데이터가 복원됩니다.</div>'
+      +'<button class="backup-btn" style="background:linear-gradient(135deg,#1D2D44,#4A7C59);color:#fff;" onclick="openSyncModal()">'
+        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/><rect x="16" y="16" width="4" height="4"/><rect x="14" y="14" width="2" height="2"/></svg>'
+        +'QR 코드로 동기화'
+      +'</button>'
+    +'</div>'
       +'<div style="background:#FFF9C4;border:0.5px solid #F9A825;border-radius:var(--rm);padding:10px 12px;margin-bottom:10px;">'
         +'<div style="font-size:11px;font-weight:700;color:#F57F17;margin-bottom:4px;">⚠️ 앱 업데이트 시 데이터 보존 방법</div>'
         +'<div style="font-size:11px;color:#7B5800;line-height:1.7;">'
@@ -3871,6 +3901,406 @@ function openDataMgmtModal(){
   +'</div>';
 
   document.body.appendChild(div);
+}
+
+
+/* ══ QR 동기화 (PC→모바일) ══ */
+function generateSyncCode(){
+  var data = {};
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v) data[k] = v;
+  });
+  var json = JSON.stringify(data);
+  // Base64 + 압축 (간단한 URI 인코딩)
+  try{
+    return btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g, function(m,p1){
+      return String.fromCharCode('0x'+p1);
+    }));
+  }catch(e){
+    return btoa(unescape(encodeURIComponent(json)));
+  }
+}
+
+function applySyncCode(code){
+  try{
+    var json = decodeURIComponent(Array.prototype.map.call(atob(code), function(c){
+      return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    var data = JSON.parse(json);
+    var count = 0;
+    Object.keys(data).forEach(function(k){
+      if(BACKUP_KEYS.includes(k)){
+        localStorage.setItem(k, data[k]);
+        count++;
+      }
+    });
+    return count;
+  }catch(e){
+    try{
+      var json2 = decodeURIComponent(escape(atob(code)));
+      var data2 = JSON.parse(json2);
+      var count2 = 0;
+      Object.keys(data2).forEach(function(k){
+        if(BACKUP_KEYS.includes(k)){
+          localStorage.setItem(k, data2[k]);
+          count2++;
+        }
+      });
+      return count2;
+    }catch(e2){
+      throw new Error('동기화 코드가 올바르지 않습니다.');
+    }
+  }
+}
+
+function openSyncModal(){
+  var code = generateSyncCode();
+  var appUrl = window.location.href.split('?')[0];
+  var syncUrl = appUrl + '?sync=' + code;
+
+  var div = document.createElement('div');
+  div.id = 'sync-overlay';
+  div.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:10002;display:flex;align-items:center;justify-content:center;padding:14px;overflow-y:auto;';
+
+  div.innerHTML =
+    '<div style="background:var(--bg1);border-radius:var(--rx);width:100%;max-width:380px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);">'
+    // 헤더
+    +'<div style="padding:12px 14px;background:var(--acc);display:flex;justify-content:space-between;align-items:center;">'
+      +'<div style="color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;">'
+        +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>'
+        +'PC → 휴대폰 동기화'
+      +'</div>'
+      +'<button onclick="document.getElementById(\'sync-overlay\').remove()" style="background:none;border:none;font-size:18px;color:#fff;cursor:pointer;">✕</button>'
+    +'</div>'
+    +'<div style="padding:14px;">'
+
+      // 안내
+      +'<div style="background:#E6F1FB;border:0.5px solid #90CAF9;border-radius:var(--rm);padding:10px 12px;margin-bottom:14px;">'
+        +'<div style="font-size:12px;font-weight:700;color:#0C447C;margin-bottom:4px;">📱 사용 방법</div>'
+        +'<div style="font-size:11px;color:#0C447C;line-height:1.8;">'
+          +'1. 아래 QR코드를 <strong>휴대폰 카메라</strong>로 스캔<br>'
+          +'2. 링크가 열리면 앱이 자동으로 데이터 복원<br>'
+          +'또는 동기화 코드를 직접 복사해 휴대폰에 붙여넣기'
+        +'</div>'
+      +'</div>'
+
+      // QR 코드
+      +'<div style="text-align:center;margin-bottom:14px;">'
+        +'<div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;">QR 코드 스캔</div>'
+        +'<div id="qr-container" style="width:180px;height:180px;margin:0 auto;border:0.5px solid var(--bd1);border-radius:var(--rm);background:#fff;display:flex;align-items:center;justify-content:center;">'
+          +'<div style="font-size:11px;color:var(--tx3);">QR 생성 중...</div>'
+        +'</div>'
+      +'</div>'
+
+      // 동기화 코드 (직접 복사)
+      +'<div style="margin-bottom:12px;">'
+        +'<div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:5px;">동기화 코드 (복사 후 휴대폰에서 붙여넣기)</div>'
+        +'<div style="display:flex;gap:5px;">'
+          +'<textarea id="sync-code-box" style="flex:1;height:60px;font-size:9px;font-family:monospace;resize:none;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:var(--rm);padding:6px;color:var(--tx2);" readonly>'+code+'</textarea>'
+          +'<button onclick="copySyncCode()" style="padding:6px 10px;background:var(--acc);color:#fff;border:none;border-radius:var(--rm);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;align-self:stretch;">복사</button>'
+        +'</div>'
+      +'</div>'
+
+      // 구분선
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">'
+        +'<div style="flex:1;height:0.5px;background:var(--bd1);"></div>'
+        +'<span style="font-size:10px;color:var(--tx3);">휴대폰에서 코드 입력</span>'
+        +'<div style="flex:1;height:0.5px;background:var(--bd1);"></div>'
+      +'</div>'
+
+      // 코드 입력 (모바일에서)
+      +'<div style="margin-bottom:10px;">'
+        +'<div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:5px;">동기화 코드 붙여넣기 (휴대폰에서)</div>'
+        +'<textarea id="sync-input-box" placeholder="PC에서 복사한 동기화 코드를 여기 붙여넣기..." style="width:100%;height:60px;font-size:9px;font-family:monospace;resize:none;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:var(--rm);padding:6px;color:var(--tx1);margin-bottom:6px;"></textarea>'
+        +'<button onclick="applySyncFromInput()" style="width:100%;padding:10px;background:#4A7C59;color:#fff;border:none;border-radius:var(--rm);font-size:12px;font-weight:600;cursor:pointer;">'
+          +'📲 이 기기에 데이터 복원'
+        +'</button>'
+      +'</div>'
+
+    +'</div>'
+  +'</div>';
+
+  document.body.appendChild(div);
+
+  // QR 코드 생성
+  setTimeout(function(){
+    generateQR(syncUrl, 'qr-container');
+  }, 100);
+}
+
+function copySyncCode(){
+  var box = document.getElementById('sync-code-box');
+  if(!box) return;
+  box.select();
+  try{
+    navigator.clipboard.writeText(box.value).then(function(){
+      toast('동기화 코드 복사됐습니다 ✓');
+    }).catch(function(){
+      document.execCommand('copy');
+      toast('동기화 코드 복사됐습니다 ✓');
+    });
+  }catch(e){
+    document.execCommand('copy');
+    toast('동기화 코드 복사됐습니다 ✓');
+  }
+}
+
+function applySyncFromInput(){
+  var box = document.getElementById('sync-input-box');
+  if(!box || !box.value.trim()){ toast('동기화 코드를 입력해 주세요'); return; }
+  try{
+    var count = applySyncCode(box.value.trim());
+    var overlay = document.getElementById('sync-overlay');
+    if(overlay) overlay.remove();
+    alert('✅ 동기화 완료!\n\n' + count + '개 항목 복원됐습니다.\n페이지를 새로고침합니다.');
+    location.reload();
+  }catch(e){
+    alert('❌ ' + e.message);
+  }
+}
+
+/* QR 코드 생성 (QR Server API) */
+function generateQR(url, containerId){
+  var container = document.getElementById(containerId);
+  if(!container) return;
+  // URL이 너무 길면 단축 안내
+  if(url.length > 2000){
+    container.innerHTML = '<div style="padding:12px;text-align:center;font-size:10px;color:var(--tx2);line-height:1.6;">데이터가 많아 QR코드 생성이 어렵습니다.<br><br>위 <strong>동기화 코드를 복사</strong>해<br>휴대폰에 직접 붙여넣어 주세요.</div>';
+    return;
+  }
+  var img = document.createElement('img');
+  img.style.cssText = 'width:180px;height:180px;border-radius:var(--rm);';
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
+  img.onerror = function(){
+    container.innerHTML = '<div style="padding:12px;text-align:center;font-size:10px;color:var(--tx2);line-height:1.6;">QR 생성 실패 (인터넷 필요)<br><br>동기화 코드를 직접 복사해 주세요.</div>';
+  };
+  container.innerHTML = '';
+  container.appendChild(img);
+}
+
+/* URL 파라미터로 자동 동기화 처리 */
+(function checkSyncParam(){
+  var params = new URLSearchParams(window.location.search);
+  var syncCode = params.get('sync');
+  if(syncCode){
+    // URL에서 sync 파라미터 제거
+    var cleanUrl = window.location.href.split('?')[0];
+    window.history.replaceState({}, document.title, cleanUrl);
+    // 자동 복원 확인
+    setTimeout(function(){
+      if(confirm('📱 PC에서 보낸 데이터가 감지됐습니다!\n\n이 기기에 데이터를 복원할까요?\n(기존 데이터가 있으면 덮어씁니다)')){
+        try{
+          var count = applySyncCode(syncCode);
+          alert('✅ 동기화 완료! ' + count + '개 항목 복원됐습니다.\n페이지를 새로고침합니다.');
+          location.reload();
+        }catch(e){
+          alert('❌ 동기화 실패: ' + e.message);
+        }
+      }
+    }, 1500);
+  }
+})();
+
+
+/* ══════════════════════════════════════════
+   클라우드 동기화 (JSONBin.io 기반)
+   - 무료 계정으로 월 10,000회 요청 가능
+   - PC/모바일 어디서든 버튼 하나로 동기화
+══════════════════════════════════════════ */
+
+var JSONBIN_API   = 'https://api.jsonbin.io/v3';
+var SYNC_KEY_KEY  = 'epc_sync_apikey';   /* jsonbin master key */
+var SYNC_BIN_KEY  = 'epc_sync_binid';    /* 생성된 bin ID */
+var SYNC_LAST_KEY = 'epc_sync_last';     /* 마지막 동기화 시각 */
+
+function getSyncApiKey(){ return localStorage.getItem(SYNC_KEY_KEY)||''; }
+function getSyncBinId(){  return localStorage.getItem(SYNC_BIN_KEY)||''; }
+function setSyncApiKey(k){ localStorage.setItem(SYNC_KEY_KEY, k); }
+function setSyncBinId(id){ localStorage.setItem(SYNC_BIN_KEY, id); }
+
+/* ── 모든 데이터를 하나의 객체로 수집 ── */
+function collectAllData(){
+  var obj = {};
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v) obj[k] = v;
+  });
+  return obj;
+}
+
+/* ── 데이터 전체 복원 ── */
+function applyAllData(obj, skipReload){
+  var count = 0;
+  Object.keys(obj).forEach(function(k){
+    if(BACKUP_KEYS.includes(k)){
+      localStorage.setItem(k, obj[k]);
+      count++;
+    }
+  });
+  if(!skipReload){
+    alert('✅ 동기화 완료! ' + count + '개 항목 복원됐습니다.\n페이지를 새로고침합니다.');
+    location.reload();
+  }
+  return count;
+}
+
+/* ── 클라우드 업로드 ── */
+async function cloudUpload(){
+  var apiKey = getSyncApiKey();
+  var binId  = getSyncBinId();
+  if(!apiKey){ toast('먼저 동기화 설정을 완료해 주세요'); openCloudSyncSetup(); return; }
+
+  var btn = document.getElementById('cloud-upload-btn');
+  if(btn){ btn.disabled=true; btn.textContent='업로드 중...'; }
+
+  try{
+    var data = collectAllData();
+    var payload = JSON.stringify({ epchemtech: data, syncedAt: new Date().toISOString() });
+
+    if(binId){
+      /* 기존 bin 업데이트 */
+      var r = await fetch(JSONBIN_API+'/b/'+binId, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json','X-Master-Key':apiKey},
+        body: payload
+      });
+      if(!r.ok) throw new Error('업로드 실패 ('+r.status+')');
+    } else {
+      /* 새 bin 생성 */
+      var r2 = await fetch(JSONBIN_API+'/b', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','X-Master-Key':apiKey,'X-Bin-Name':'EPC-Sales-Sync','X-Bin-Private':'true'},
+        body: payload
+      });
+      if(!r2.ok) throw new Error('Bin 생성 실패 ('+r2.status+')');
+      var result = await r2.json();
+      setSyncBinId(result.metadata.id);
+    }
+
+    localStorage.setItem(SYNC_LAST_KEY, new Date().toISOString());
+    toast('☁️ 클라우드 업로드 완료 ✓');
+    refreshCloudStatus();
+  } catch(e){
+    alert('❌ 업로드 실패\n\n'+e.message+'\n\nAPI Key를 다시 확인해 주세요.');
+  } finally {
+    if(btn){ btn.disabled=false; btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M5 17H3a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2h-2"/></svg> ☁️ 클라우드 업로드'; }
+  }
+}
+
+/* ── 클라우드 다운로드 ── */
+async function cloudDownload(){
+  var apiKey = getSyncApiKey();
+  var binId  = getSyncBinId();
+  if(!apiKey||!binId){ toast('먼저 동기화 설정을 완료해 주세요'); openCloudSyncSetup(); return; }
+
+  var btn = document.getElementById('cloud-download-btn');
+  if(btn){ btn.disabled=true; btn.textContent='다운로드 중...'; }
+
+  try{
+    var r = await fetch(JSONBIN_API+'/b/'+binId+'/latest', {
+      headers:{'X-Master-Key':apiKey}
+    });
+    if(!r.ok) throw new Error('다운로드 실패 ('+r.status+')');
+    var result = await r.json();
+    var obj = result.record && result.record.epchemtech;
+    if(!obj) throw new Error('저장된 데이터가 없습니다');
+
+    var syncedAt = result.record.syncedAt
+      ? new Date(result.record.syncedAt).toLocaleString('ko-KR')
+      : '알 수 없음';
+
+    if(!confirm('☁️ 클라우드 데이터를 이 기기에 복원할까요?\n\n마지막 업로드: '+syncedAt+'\n\n현재 이 기기의 데이터는 클라우드 데이터로 교체됩니다.')){
+      if(btn){ btn.disabled=false; btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 16 12 21 17 16"/><line x1="12" y1="21" x2="12" y2="9"/><path d="M5 7H3a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/></svg> 📲 이 기기에 복원'; }
+      return;
+    }
+    applyAllData(obj);
+  } catch(e){
+    alert('❌ 다운로드 실패\n\n'+e.message);
+    if(btn){ btn.disabled=false; btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 16 12 21 17 16"/><line x1="12" y1="21" x2="12" y2="9"/><path d="M5 7H3a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/></svg> 📲 이 기기에 복원'; }
+  }
+}
+
+/* ── 동기화 설정 모달 ── */
+function openCloudSyncSetup(){
+  var apiKey = getSyncApiKey();
+  var binId  = getSyncBinId();
+  var lastSync = localStorage.getItem(SYNC_LAST_KEY);
+  var lastSyncStr = lastSync ? new Date(lastSync).toLocaleString('ko-KR') : '없음';
+
+  var div = document.createElement('div');
+  div.id = 'cloud-setup-overlay';
+  div.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:10003;display:flex;align-items:center;justify-content:center;padding:14px;overflow-y:auto;';
+  div.innerHTML=
+    '<div style="background:var(--bg1);border-radius:var(--rx);width:100%;max-width:400px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);">'
+    +'<div style="padding:12px 14px;background:linear-gradient(135deg,#1D2D44,#4A7C59);display:flex;justify-content:space-between;align-items:center;">'
+      +'<div style="color:#fff;font-size:14px;font-weight:700;">☁️ 클라우드 동기화 설정</div>'
+      +'<button onclick="document.getElementById(\'cloud-setup-overlay\').remove()" style="background:none;border:none;font-size:18px;color:#fff;cursor:pointer;">✕</button>'
+    +'</div>'
+    +'<div style="padding:14px;">'
+
+      /* 설정 방법 안내 */
+      +'<div style="background:#E6F1FB;border:0.5px solid #90CAF9;border-radius:var(--rm);padding:11px 13px;margin-bottom:14px;">'
+        +'<div style="font-size:12px;font-weight:700;color:#0C447C;margin-bottom:6px;">📋 1회 설정 방법 (3분 소요)</div>'
+        +'<div style="font-size:11px;color:#0C447C;line-height:1.9;">'
+          +'① <a href="https://jsonbin.io" target="_blank" style="color:#0C447C;font-weight:700;">jsonbin.io</a> 무료 가입<br>'
+          +'② 로그인 → 우상단 <strong>API Keys</strong> 클릭<br>'
+          +'③ <strong>Master Key</strong> 복사<br>'
+          +'④ 아래에 붙여넣기 → 저장<br>'
+          +'⑤ 이후 버튼 하나로 PC ↔ 모바일 동기화!'
+        +'</div>'
+      +'</div>'
+
+      /* API Key 입력 */
+      +'<div class="fl" style="margin-bottom:12px;">'
+        +'<label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">JSONBin Master Key</label>'
+        +'<div style="display:flex;gap:5px;">'
+          +'<input type="password" id="jb-key-input" value="'+(apiKey||'')+'" placeholder="$2b$10$..." style="flex:1;font-family:monospace;font-size:12px;"/>'
+          +'<button onclick="var el=document.getElementById(\'jb-key-input\');el.type=el.type===\'password\'?\'text\':\'password\'" style="background:none;border:0.5px solid var(--bd2);border-radius:var(--rm);padding:6px 10px;font-size:11px;color:var(--tx2);cursor:pointer;white-space:nowrap;">👁 보기</button>'
+        +'</div>'
+      +'</div>'
+
+      /* Bin ID (선택) */
+      +'<div class="fl" style="margin-bottom:14px;">'
+        +'<label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Bin ID <span style="font-size:10px;color:var(--tx3);font-weight:400;">(다른 기기에서 가져오기 시 필요)</span></label>'
+        +'<input type="text" id="jb-bin-input" value="'+(binId||'')+'" placeholder="PC에서 저장된 Bin ID 입력..." style="font-family:monospace;font-size:12px;"/>'
+        +'<div style="font-size:10px;color:var(--tx3);margin-top:3px;">PC에서 먼저 업로드 후 → Bin ID가 자동 저장됩니다. 모바일에서는 PC의 Bin ID를 입력하세요.</div>'
+      +'</div>'
+
+      +(apiKey ? '<div style="background:#EAF3DE;border:0.5px solid #97C459;border-radius:var(--rm);padding:8px 11px;margin-bottom:12px;font-size:11px;color:#1B5E20;">✅ API Key 설정됨 · 마지막 업로드: '+lastSyncStr+'</div>' : '')
+      +(binId  ? '<div style="background:#E8EAF6;border:0.5px solid #9FA8DA;border-radius:var(--rm);padding:8px 11px;margin-bottom:12px;font-size:11px;color:#1A237E;font-family:monospace;word-break:break-all;">Bin ID: '+binId+'</div>' : '')
+
+      +'<button onclick="saveCloudSyncSettings()" class="pbtn">저장</button>'
+    +'</div>'
+  +'</div>';
+  document.body.appendChild(div);
+}
+
+function saveCloudSyncSettings(){
+  var key = (document.getElementById('jb-key-input')||{}).value||'';
+  var bin = (document.getElementById('jb-bin-input')||{}).value.trim()||'';
+  if(!key){ toast('API Key를 입력해 주세요'); return; }
+  setSyncApiKey(key.trim());
+  if(bin) setSyncBinId(bin);
+  var overlay = document.getElementById('cloud-setup-overlay');
+  if(overlay) overlay.remove();
+  toast('동기화 설정이 저장됐습니다 ✓');
+  refreshCloudStatus();
+}
+
+function refreshCloudStatus(){
+  var el = document.getElementById('cloud-sync-status');
+  if(!el) return;
+  var apiKey = getSyncApiKey();
+  var binId  = getSyncBinId();
+  var last   = localStorage.getItem(SYNC_LAST_KEY);
+  if(apiKey && binId){
+    el.innerHTML='<span style="color:#1B5E20;">✅ 연결됨</span>'+(last?' · 마지막: '+new Date(last).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'');
+  } else if(apiKey){
+    el.innerHTML='<span style="color:#BA7517;">⚙️ 설정됨 (첫 업로드 필요)</span>';
+  } else {
+    el.innerHTML='<span style="color:var(--tx3);">미설정</span>';
+  }
 }
 
 function closeModal(){document.getElementById('modal-area').innerHTML='';}
