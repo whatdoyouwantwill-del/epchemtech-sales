@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="이피캠텍 영업팀"/>
 <title>이피캠텍 국내외영업팀</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
 <style>
 /* ── 테마 (라이트 기본) ── */
 :root{
@@ -62,6 +62,8 @@ button{cursor:pointer;}
   border-bottom:2px solid transparent;line-height:1.4;
   white-space:nowrap;transition:color .15s;
 }
+.tab svg{display:block;margin:0 auto 2px;stroke:currentColor;}
+.tab.on svg{stroke:var(--acc);}
 .tab.on{color:var(--acc);border-bottom:2px solid var(--acc);font-weight:600;}
 
 /* ── 스크롤 영역 ── */
@@ -85,6 +87,9 @@ button{cursor:pointer;}
 .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px;}
 .tbtn{padding:8px 4px;border:0.5px solid var(--bd1);border-radius:var(--rm);background:var(--bg1);text-align:center;font-size:10px;color:var(--tx2);transition:all .15s;}
 .tbtn i{display:block;font-size:15px;margin-bottom:2px;}
+.tbtn svg{display:block;margin:0 auto 4px;opacity:.85;}
+.tbtn.sel svg{opacity:1;}
+.tbtn span{display:block;font-size:10px;}
 .tbtn.sel{border:2px solid var(--acc);color:var(--acc);background:var(--bg2);font-weight:600;}
 
 /* ── 태그 ── */
@@ -271,6 +276,53 @@ button{cursor:pointer;}
 .pin-modal-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .pin-modal-btn{padding:13px;border:0.5px solid var(--bd2);border-radius:var(--rm);background:var(--bg2);font-size:18px;font-weight:600;cursor:pointer;text-align:center;}
 .pin-modal-btn:active{background:var(--bt);}
+
+/* ══ SPEC 테이블 ══ */
+.spec-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:var(--rl);border:0.5px solid var(--bd1);box-shadow:var(--shadow);}
+.spec-table{border-collapse:collapse;min-width:900px;font-size:11px;background:var(--bg1);}
+.spec-table th{background:var(--acc);color:#fff;padding:7px 10px;white-space:nowrap;position:sticky;top:0;z-index:2;font-weight:600;border-right:0.5px solid rgba(255,255,255,.2);}
+.spec-table th.col-item{position:sticky;left:0;z-index:3;background:var(--acc);min-width:160px;}
+.spec-table td{padding:6px 10px;border-bottom:0.5px solid var(--bd1);border-right:0.5px solid var(--bd1);white-space:nowrap;vertical-align:middle;}
+.spec-table td.col-item{position:sticky;left:0;z-index:1;background:var(--bg2);font-weight:600;min-width:160px;color:var(--tx1);}
+.spec-table td.sub-item{background:var(--bg2);color:var(--tx2);padding-left:18px;}
+.spec-table td.val-cell{text-align:center;color:var(--tx1);min-width:90px;cursor:pointer;}
+.spec-table td.val-cell:hover{background:#FFFDE7;}
+.spec-table td.val-cell[contenteditable="true"]{background:#FFFDE7;outline:1.5px solid #F57F17;border-radius:2px;}
+.spec-table td.val-cell[contenteditable="true"]:focus{outline:2px solid var(--acc);}
+.spec-table tr:hover td:not(.col-item){background:#f9f9f7;}
+[data-theme="dark"] .spec-table tr:hover td:not(.col-item){background:rgba(255,255,255,.03);}
+[data-theme="dark"] .spec-table td.col-item,[data-theme="dark"] .spec-table td.sub-item{background:var(--bg2);}
+[data-theme="dark"] .spec-table td.val-cell:hover{background:rgba(255,248,128,.08);}
+.spec-table .ep-col{background:rgba(74,124,89,.08);}
+.spec-table th.ep-col{background:#4A7C59;}
+.spec-table .note-cell{font-size:10px;color:var(--tx3);max-width:200px;white-space:normal;word-break:break-all;}
+.spec-rotate-hint{display:flex;align-items:center;gap:8px;background:#E6F1FB;border:0.5px solid #90CAF9;border-radius:var(--rm);padding:9px 12px;margin-bottom:9px;font-size:11px;color:#0C447C;}
+.spec-zoom-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.spec-changed{background:#FFFDE7 !important;font-weight:700;color:#F57F17 !important;}
+
+/* ══ 뉴스 아코디언 ══ */
+.news-item{border-bottom:0.5px solid var(--bd1);overflow:hidden;}
+.news-item:last-child{border-bottom:none;}
+.news-header{display:flex;align-items:flex-start;gap:8px;padding:10px 0;cursor:pointer;user-select:none;-webkit-user-select:none;}
+.news-header:active{opacity:.75;}
+.news-num{width:18px;height:18px;border-radius:50%;background:var(--acc);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.news-title{flex:1;font-size:12px;font-weight:600;line-height:1.4;color:var(--tx1);}
+.news-date{font-size:10px;color:var(--tx3);white-space:nowrap;flex-shrink:0;margin-left:4px;}
+.news-chevron{font-size:12px;color:var(--tx3);flex-shrink:0;transition:transform .2s;margin-top:2px;}
+.news-chevron.open{transform:rotate(180deg);}
+.news-body{font-size:11px;line-height:1.7;color:var(--tx2);padding:0 0 10px 26px;display:none;}
+.news-body.open{display:block;}
+.news-body a{color:var(--acc);font-size:10px;text-decoration:none;}
+.news-src{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--tx3);margin-top:6px;}
+
+/* ══ 데이터 백업/복원 ══ */
+.backup-card{background:var(--bg2);border:0.5px solid var(--bd1);border-radius:var(--rl);padding:12px;margin-bottom:10px;}
+.backup-card-title{font-size:11px;font-weight:700;color:var(--tx1);margin-bottom:4px;display:flex;align-items:center;gap:5px;}
+.backup-card-desc{font-size:10px;color:var(--tx3);line-height:1.6;margin-bottom:8px;}
+.backup-btn{width:100%;padding:10px;border-radius:var(--rm);border:none;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.backup-btn-export{background:#1D2D44;color:#fff;}
+.backup-btn-import{background:#4A7C59;color:#fff;}
+.backup-btn-reset{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595;}
 </style>
 </head>
 <body>
@@ -294,14 +346,15 @@ button{cursor:pointer;}
 
 <!-- ── 탭바 (가로 스크롤) ── -->
 <div class="tabbar" id="tabbar">
-  <div class="tab on" onclick="go('feed')"><i class="ti ti-layout-list" style="font-size:12px;"></i><br>피드</div>
-  <div class="tab" onclick="go('log')"><i class="ti ti-plus" style="font-size:12px;"></i><br>기록</div>
-  <div class="tab" onclick="go('clients')"><i class="ti ti-building" style="font-size:12px;"></i><br>고객사</div>
-  <div class="tab" onclick="go('cal')"><i class="ti ti-calendar" style="font-size:12px;"></i><br>캘린더</div>
-  <div class="tab" onclick="go('minutes')"><i class="ti ti-file-text" style="font-size:12px;"></i><br>회의록</div>
-  <div class="tab" onclick="go('gallery')"><i class="ti ti-photo" style="font-size:12px;"></i><br>갤러리</div>
-  <div class="tab" onclick="go('addr')"><i class="ti ti-address-book" style="font-size:12px;"></i><br>주소록</div>
-  <div class="tab" onclick="go('stats')"><i class="ti ti-chart-bar" style="font-size:12px;"></i><br>통계</div>
+  <div class="tab on" onclick="go('feed')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><br>피드</div>
+  <div class="tab" onclick="go('log')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="15" y2="15"/><line x1="12" y1="3" x2="12" y2="5"/></svg><br>기록</div>
+  <div class="tab" onclick="go('clients')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/><line x1="3" y1="21" x2="21" y2="21"/></svg><br>고객사</div>
+  <div class="tab" onclick="go('cal')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="4" y1="11" x2="20" y2="11"/><rect x="8" y="15" width="2" height="2" rx="0.5" fill="currentColor"/></svg><br>캘린더</div>
+  <div class="tab" onclick="go('minutes')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg><br>회의록</div>
+  <div class="tab" onclick="go('gallery')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><br>갤러리</div>
+  <div class="tab" onclick="go('addr')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg><br>주소록</div>
+  <div class="tab" onclick="go('stats')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><br>통계</div>
+  <div class="tab" onclick="go('spec')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg><br>SPEC</div>
 </div>
 <div class="scroll" id="main-scroll">
 
@@ -318,12 +371,12 @@ button{cursor:pointer;}
 <div id="pane-log" class="pane">
 <div class="card">
   <div class="tgrid">
-    <button class="tbtn sel" onclick="selT(this,'미팅')"><i class="ti ti-users"></i>미팅</button>
-    <button class="tbtn" onclick="selT(this,'통화')"><i class="ti ti-phone"></i>통화</button>
-    <button class="tbtn" onclick="selT(this,'이메일')"><i class="ti ti-mail"></i>이메일</button>
-    <button class="tbtn" onclick="selT(this,'견적')"><i class="ti ti-file-invoice"></i>견적</button>
-    <button class="tbtn" onclick="selT(this,'제안서')"><i class="ti ti-file-description"></i>제안서</button>
-    <button class="tbtn" onclick="selT(this,'제출파일')"><i class="ti ti-file-upload"></i>제출파일</button>
+    <button class="tbtn sel" onclick="selT(this,'미팅')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 21v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1"/><path d="M16 11a3 3 0 0 1 6 0v1h-6v-1z"/></svg><span>미팅</span></button>
+    <button class="tbtn" onclick="selT(this,'통화')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/><path d="M15 7a2 2 0 0 1 2 2"/><path d="M15 3a6 6 0 0 1 6 6"/></svg><span>통화</span></button>
+    <button class="tbtn" onclick="selT(this,'이메일')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg><span>이메일</span></button>
+    <button class="tbtn" onclick="selT(this,'견적')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><line x1="9" y1="9" x2="10" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg><span>견적</span></button>
+    <button class="tbtn" onclick="selT(this,'제안서')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="m9.5 14.5 1.5 1.5 3-3"/></svg><span>제안서</span></button>
+    <button class="tbtn" onclick="selT(this,'제출파일')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><polyline points="9 14 12 11 15 14"/></svg><span>제출파일</span></button>
   </div>
   <div class="r2">
     <div class="fl"><label>날짜</label><input type="date" id="l-date"/></div>
@@ -518,6 +571,40 @@ button{cursor:pointer;}
   <div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:8px;">팀원별 활동</div><div id="ubar"></div></div>
 </div>
 
+
+<!-- ▌SPEC -->
+<div id="pane-spec" class="pane">
+  <div class="spec-rotate-hint">
+    <i class="ti ti-rotate-clockwise-2" style="font-size:18px;flex-shrink:0;"></i>
+    <div>
+      <div style="font-weight:600;margin-bottom:2px;">가로 모드 권장</div>
+      <div style="opacity:.8;">휴대폰을 <strong>가로</strong>로 돌리면 표 전체를 넓게 볼 수 있습니다. 핀치 줌으로 확대/축소 가능합니다.</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+    <button id="spec-tab-lipo" onclick="switchSpec('LiPO2F2')" style="padding:6px 14px;border-radius:20px;border:1.5px solid var(--acc);background:var(--acc);color:#fff;font-size:12px;font-weight:600;cursor:pointer;">LiPO₂F₂</button>
+    <button id="spec-tab-lifsi" onclick="switchSpec('LiFSI')" style="padding:6px 14px;border-radius:20px;border:1.5px solid var(--bd2);background:none;color:var(--tx2);font-size:12px;cursor:pointer;">LiFSI</button>
+    <div style="flex:1;"></div>
+    <button onclick="resetSpecData()" style="padding:5px 11px;border-radius:20px;border:0.5px solid var(--bd2);background:none;color:var(--tx2);font-size:11px;cursor:pointer;" title="초기값으로 복원"><i class="ti ti-refresh" style="font-size:11px;vertical-align:-1px;"></i> 초기화</button>
+    <button onclick="saveSpecData()" style="padding:5px 14px;border-radius:20px;border:none;background:var(--acc2);color:#fff;font-size:11px;font-weight:600;cursor:pointer;"><i class="ti ti-device-floppy" style="font-size:11px;vertical-align:-1px;"></i> 저장</button>
+  </div>
+  <div class="spec-zoom-bar">
+    <span style="font-size:11px;color:var(--tx3);">줌</span>
+    <button onclick="adjSpecZoom(-10)" style="background:none;border:0.5px solid var(--bd2);border-radius:var(--rm);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;"><i class="ti ti-zoom-out" style="font-size:13px;"></i></button>
+    <span id="spec-zoom-pct" style="font-size:11px;color:var(--tx2);min-width:36px;text-align:center;">100%</span>
+    <button onclick="adjSpecZoom(10)" style="background:none;border:0.5px solid var(--bd2);border-radius:var(--rm);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;"><i class="ti ti-zoom-in" style="font-size:13px;"></i></button>
+    <button onclick="adjSpecZoom(0)" style="background:none;border:0.5px solid var(--bd2);border-radius:var(--rm);padding:3px 9px;font-size:11px;color:var(--tx2);cursor:pointer;">1:1</button>
+    <span style="font-size:10px;color:var(--tx3);margin-left:4px;"><i class="ti ti-pencil" style="font-size:10px;vertical-align:-1px;"></i> 셀 탭하면 편집</span>
+  </div>
+  <div id="spec-table-wrap" style="transform-origin:top left;transition:transform .2s;">
+    <div id="spec-table-container"></div>
+  </div>
+  <div style="margin-top:12px;background:var(--bg2);border-radius:var(--rm);padding:10px 12px;font-size:11px;color:var(--tx2);">
+    <i class="ti ti-info-circle" style="font-size:11px;color:var(--acc);vertical-align:-1px;"></i>
+    <strong>편집 안내:</strong> 셀을 탭하면 바로 수정할 수 있습니다. 수정된 셀은 <span style="color:#F57F17;font-weight:600;">노란색</span>으로 표시됩니다. 상단 <strong>저장</strong> 버튼으로 저장하세요.
+  </div>
+</div>
+
 </div><!-- /scroll -->
 </div><!-- /shell -->
 <div id="modal-area"></div>
@@ -656,7 +743,7 @@ function applyTheme(){
   const icon=document.getElementById('theme-icon');
   if(icon)icon.className=isDark?'ti ti-moon':'ti ti-sun';
 }
-function toggleTheme(){isDark=!isDark;try{localStorage.setItem('epc_theme',isDark?'dark':'light');}catch(e){}applyTheme();toast(isDark?'🌙 다크 모드':'☀️ 라이트 모드');}
+function toggleTheme(){isDark=!isDark;try{localStorage.setItem('epc_theme',isDark?'dark':'light');}catch(e){}applyTheme();var ti=document.getElementById('theme-icon');if(ti) ti.innerHTML=isDark?"<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>":"<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><line x1=\"12\" y1=\"2\" x2=\"12\" y2=\"4\"/><line x1=\"12\" y1=\"20\" x2=\"12\" y2=\"22\"/><line x1=\"2\" y1=\"12\" x2=\"4\" y2=\"12\"/><line x1=\"20\" y1=\"12\" x2=\"22\" y2=\"12\"/></svg>";toast(isDark?'🌙 다크 모드':'☀️ 라이트 모드');}
 
 /* ── INIT ── */
 loadU();
@@ -667,7 +754,7 @@ function refCsel(){const cv=csel.value;while(csel.options.length>1)csel.remove(1
 refCsel();
 function upPill(){const u=curU();document.getElementById('culbl').textContent=ud(u);document.getElementById('cudot').style.background=u.color;}
 upPill();
-function updateApiBtn(){const ic=document.getElementById('api-icon');if(!ic)return;ic.className=hasKey()?'ti ti-sparkles':'ti ti-settings';document.getElementById('api-btn').style.background=hasKey()?'rgba(74,124,89,.4)':'rgba(255,255,255,.12)';}
+function updateApiBtn(){var ic=document.getElementById('api-icon');if(!ic)return;ic.innerHTML=hasKey()?"<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z\"/><path d=\"M5 3l.5 1.5 1.5.5-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z\"/><path d=\"M19 13l.5 1.5 1.5.5-1.5.5L19 17l-.5-1.5L17 15l1.5-.5z\"/></svg>":"<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg>";document.getElementById('api-btn').style.background=hasKey()?'rgba(74,124,89,.4)':'rgba(255,255,255,.12)';}
 updateApiBtn();
 function onCsel(){const v=csel.value;if(v){document.getElementById('l-client').value=v;showCbar(v);}}
 function showCbar(n){const p=gcp(n);const el=document.getElementById('l-cbar');el.style.display='block';el.style.background=p.shades[2];el.style.borderLeft='4px solid '+p.border;}
@@ -1194,6 +1281,33 @@ function _renderCliP(name, editMode){
     +'onclick="closeModal();go(\'log\');document.getElementById(\'l-client\').value=\''+name+'\';showCbar(\''+name+'\');">'
     +'이 고객사로 활동 기록</button>';
 
+  /* 뉴스 섹션 */
+  var newsItems = CLI_NEWS[name] || [];
+  var newsHtml = '';
+  if(newsItems.length){
+    newsHtml = '<div style="background:'+p.shades[0]+';border:0.5px solid '+p.border+';border-radius:var(--rl);padding:11px;margin-bottom:10px;">'
+      +'<div style="font-size:11px;font-weight:700;color:'+p.text+';margin-bottom:8px;display:flex;align-items:center;gap:5px;">'
+        +'<i class="ti ti-news" style="font-size:12px;"></i>최근 주요 뉴스'
+        +'<span style="font-size:9px;background:'+p.shades[2]+';color:'+p.text+';padding:1px 6px;border-radius:20px;font-weight:600;">'+newsItems.length+'건</span>'
+      +'</div>'
+      +newsItems.map(function(ni,i){
+        var nid = 'news_'+name.replace(/[^a-zA-Z0-9]/g,'_')+'_'+i;
+        return '<div class="news-item">'
+          +'<div class="news-header" onclick="toggleNews(\''+nid+'\')" >'
+            +'<div class="news-num">'+( i+1)+'</div>'
+            +'<div class="news-title">'+ni.title+'</div>'
+            +'<span class="news-date">'+ni.date+'</span>'
+            +'<i class="ti ti-chevron-down news-chevron" id="chev_'+nid+'"></i>'
+          +'</div>'
+          +'<div class="news-body" id="'+nid+'">'
+            +ni.body
+            +'<div class="news-src"><i class="ti ti-link" style="font-size:10px;"></i>출처: <a href="'+ni.url+'" target="_blank">'+ni.src+'</a></div>'
+          +'</div>'
+        +'</div>';
+      }).join('')
+    +'</div>';
+  }
+
   /* 조립 */
   ma.innerHTML =
     '<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="modal">'
@@ -1205,6 +1319,7 @@ function _renderCliP(name, editMode){
       +contactsHtml
       +memoHtml
       +salesHtml
+      +newsHtml
       +btnHtml
     +'</div>'
   +'</div></div>';
@@ -1970,6 +2085,9 @@ function openUserMenuFromApp(){
       +'</button>'
       +'<button onclick="openUserModal()" style="width:100%;padding:10px;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:var(--rm);font-size:13px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:8px;">'
         +'<i class="ti ti-users" style="font-size:15px;color:var(--acc);"></i><span>팀원 전환 / 편집</span>'
+      +'</button>'
+      +'<button onclick="closeModal();openDataMgmtModal()" style="width:100%;padding:10px;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:var(--rm);font-size:13px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:8px;">'
+      +'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 7 12 3 4 7"/><polyline points="4 17 12 21 20 17"/><polyline points="4 12 12 16 20 12"/></svg><span>데이터 백업 / 복원</span>'
       +'</button>'
       +'<button onclick="closeModal();logoutUser()" style="width:100%;padding:10px;background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--rm);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;color:#A32D2D;">'
         +'<i class="ti ti-logout" style="font-size:15px;"></i><span>로그아웃</span>'
@@ -2969,7 +3087,7 @@ function closeStatDetail(){
 
 /* ══ NAV ══ */
 function go(tab){
-  const tabs=['feed','log','clients','cal','minutes','gallery','addr','stats'];
+  const tabs=['feed','log','clients','cal','minutes','gallery','addr','stats','spec'];
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',tabs[i]===tab));
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
   const p=document.getElementById('pane-'+tab);if(p)p.classList.add('on');
@@ -2982,7 +3100,779 @@ function go(tab){
   if(tab==='minutes')renderMinutes();
   if(tab==='gallery'){renderGalFilterRow();renderGallery();}
   if(tab==='addr'){renderAddrFilterBar();renderAddr();}
-  if(tab==='stats')renderStats();}
+  if(tab==='stats')renderStats();if(tab==='spec')renderSpec();}
+
+/* ══ SPEC 테이블 ══ */
+var SPEC_BASE = {"LiPO2F2": {"companies": ["기본(To-Be)", "기본(현재)", "이피캠텍", "덕산(Duksan)", "엔켐(EnChem)", "동화(DongWha)", "솔브레인(SoulB)", "MUIS", "캡캠(Capchem)", "쿤룬(KunLun)", "항썽(Hangsheng)", "용타이(Yongtai)", "금우(Jinniu)", "진후이（JinHui)", "궈타이(Guotai)", "F&let", "씨웨이(SaiWei)"], "rows": [{"item": "유효기간(Shelf Life)", "sub": "", "vals": ["6M", "12M", "", "12M", "10M", "12M", "12M", "12M", "12M", "6M", "6M", "12M", "-", "12M", "12M", "12M", "6M"], "note": ""}, {"item": "수 분(Moisture)", "sub": "", "vals": ["≤ 70 ppm", "≤ 100 ppm", "", "≤ 100 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 90 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 150 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 70 ppm", "≤120", "≤ 100 ppm", "≤ 100 ppm", "≤ 100 ppm"], "note": ""}, {"item": "플루오린화수소(Hydrogen Fluoride (HF))", "sub": "", "vals": ["≤ 50 ppm", "≤ 100 ppm", "", "≤ 100 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 50 ppm", "≤ 100 ppm", "≤ 50 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 100 ppm", "≤ 150 ppm", "≤50", "≤ 100 ppm", "≤ 100 ppm", "≤ 80 ppm"], "note": "天津金牛(Jinniu)的外包装桶检查要求干净无破损 / 천진금우는 포장통의 청결관리 필수"}, {"item": "순 도 (양이온) / (Purity (Cation))", "sub": "", "vals": ["≥ 99.9 %", "", "", "", "", "", "", "", "≥ 99.5 %", "≥ 99.9 %", "≥ 99.9%", ">99.0%", "≥ 99.9 %", "≥99.9%", "≥ 99.5 %", "≥99.9%", "≥99.9%"], "note": ""}, {"item": "순 도 (음이온) / Purity (Anion)", "sub": "", "vals": ["≥ 99.5 %", "≥ 99.0 %", "", "≥ 99.5 %", "≥ 99.5 %", "≥ 99.0 %", "≥ 99.0 %", "≥ 99.0 %", "", "", "", "", "", "", "", "", ""], "note": ""}, {"item": "Cl-", "sub": "", "vals": ["≤  1 ppm", "≤  10 ppm", "", "≤ 5 ppm", "≤ 1 ppm", "≤ 10 ppm", "≤ 10 ppm", "≤ 10 ppm", "≤ 5 ppm", "≤ 5 ppm", "≤ 5 ppm", "≤ 10 ppm", "≤ 10 ppm", "≤5 ppm", "≤ 10 ppm", "≤ 10 ppm", "≤ 5 ppm"], "note": ""}, {"item": "SO₄²-", "sub": "", "vals": ["", "", "", "≤ 10 ppm", "≤ 10 ppm", "", "≤ 10 ppm", "≤ 30 ppm", "≤ 10 ppm", "≤ 10 ppm", "≤ 10 ppm", "", "≤ 10 ppm", "≤10 ppm", "", "≤ 10 ppm", "≤ 10 ppm"], "note": ""}, {"item": "탁 도 Turbidity", "sub": "", "vals": ["≤ 1.5 NTU", "≤ 30 NTU", "", "≤ 30 NTU", "≤ 30 NTU", "≤ 30 NTU", "≤ 30 NTU", "≤ 30 NTU", "≤ 1.5 NTU", "", "", "≤ 30 NTU", "", "", "≤ 5", "", ""], "note": "国泰华荣(Guotai)的溶解浊度(LB-315+1%A19):≤5 mg/L"}, {"item": "색 상 Color <APHA>", "sub": "", "vals": ["", "", "", "≤ 30", "≤ 20", "", "", "", "", "", "", "", "", "", "", "", "≤15 ppm"], "note": ""}, {"item": "桶身压力(용기압력) / Container Pressure", "sub": "", "vals": ["", "", "", "", "", "", "", "", "30~100kPa", "", "", "", "", "0.04-0.06Mpa", "", "≤ 0.1Mpa", ""], "note": ""}, {"item": "금속Metal / (ICP-OES)", "sub": "Na", "vals": ["≤ 3ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 3ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 10ppm", "≤ 5ppm", "≤ 10ppm", "≤ 5ppm", "≤ 10 ppm", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "K", "vals": ["≤ 2ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 3ppm", "≤ 3ppm", "≤ 5ppm", "≤ 10ppm", "≤ 2ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "≤ 10 ppm", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Ag", "vals": ["≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "", "", "≤ 5ppm", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "Al", "vals": ["≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "", "", "≤2 ppm"], "note": ""}, {"item": "", "sub": "As", "vals": ["≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "", "", "≤2 ppm"], "note": ""}, {"item": "", "sub": "Ba", "vals": ["≤ 3ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "", "≤ 5ppm", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "Ca", "vals": ["≤ 3ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 3ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 4ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "≤ 20 ppm", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Cd", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "", "", "≤2 ppm"], "note": ""}, {"item": "", "sub": "Co", "vals": ["≤ 5ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "", "", "≤ 5ppm", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "Cr", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 2ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 1ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Cu", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 2ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 1ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Fe", "vals": ["≤ 4ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 2ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 4ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "≤ 50 ppm", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Hg", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 1ppm", "", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "", "", "≤2 ppm"], "note": ""}, {"item": "", "sub": "Mg", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Mn", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "", "≤5 ppm", "", "", ""], "note": ""}, {"item": "", "sub": "Ni", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 2ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "Pb", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 3ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 10ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "≤5 ppm", "≤ 5ppm", "≤ 5ppm", "≤2 ppm"], "note": ""}, {"item": "", "sub": "Sr", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "", "", "", "≤ 5ppm", "", "≤5 ppm", "", "", ""], "note": ""}, {"item": "", "sub": "Zn", "vals": ["≤ 1ppm", "≤ 5ppm", "", "≤ 5ppm", "≤ 5ppm", "≤ 3ppm", "≤ 5ppm", "≤ 5ppm", "≤ 1ppm", "≤ 5ppm", "≤ 5ppm", "≤ 5ppm", "", "", "", "≤ 5ppm", "≤5 ppm"], "note": ""}, {"item": "", "sub": "*Sn", "vals": ["", "", "", "", "", "", "", "≤ 5ppm", "", "", "", "", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "*Si", "vals": ["", "", "", "", "", "", "", "≤ 100ppm", "", "", "", "", "", "", "≤1000ppm", "", ""], "note": ""}, {"item": "", "sub": "DME", "vals": ["", "", "", "", "", "", "", "", "≤3500ppm", "", "", "", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "Toluene", "vals": ["", "", "", "", "", "", "", "", "≤500ppm", "", "", "", "", "", "", "", ""], "note": "capchem未知杂峰值正在确认中"}, {"item": "", "sub": "未知杂峰", "vals": ["", "", "", "", "", "", "", "", "≤500ppm", "", "", "", "", "", "", "", ""], "note": ""}, {"item": "잔류용매 Residual Solvent (GC)", "sub": "", "vals": ["≤ 800 ppm", "≤ 1,000 ppm", "", "≤ 1,000 ppm", "≤ 1,000 ppm", "≤ 1,000 ppm", "≤ 800 ppm", "≤ 2,500ppm", "", "", "", "≤1000ppm", "", "≤500 ppm", "≤2000ppm", "", "≤1000 ppm"], "note": ""}, {"item": "* 불용분(Insoluble material)", "sub": "", "vals": ["", "", "", "", "", "", "", "≤ 500ppm", "", "", "", "", "≤1000ppm", "", "", "", "≤500 ppm"], "note": ""}, {"item": "I-MR", "sub": "수분", "vals": ["", "", "", "", "", "", "", "", "", ">1.67 매분기", "", "", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "불산", "vals": ["", "", "", "", "", "", "", "", "", ">1.33 매분기", "", "", "", "", "", "", ""], "note": ""}, {"item": "", "sub": "특별특성", "vals": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], "note": ""}]}, "LiFSI": {"companies": ["이피캠텍 / (고상)", "천보 / (액상)", "덕산(DucSan)", "엔켐(EnChem)", "동화(Dongwha)", "솔브레인(SoulB)", "쿤룬(KunLun) / (액상)", "F&let(파은라이트) / (액상)", "항썽(Hisun) / (액상)", "앙훼이씬천(新宸) / (고상)"], "rows": [{"en": "Purity", "ko": "순도", "unit": "wt%", "vals": ["≥99.8%", "≥99.90", ">99.8%", "≥99.8%", ">99.0%", "", "", "≥99.8", "≥99.90", "≥99.9"], "note": "타사 대비 낮음: ≥99.9 조정 권장"}, {"en": "Moisture", "ko": "수분", "unit": "ppm", "vals": ["≤100", "≤20", "<100", "≤100", "<200", "", "≤20", "≤20", "≤20", "≤50"], "note": "수분 앙훼이씬천 (고상) 대비 높음: ≤50 조정 권장"}, {"en": "Acidity (HF)", "ko": "산도 (불산)", "unit": "ppm", "vals": ["≤100", "≤25", "<100", "≤100", "", "", "≤30", "≤50", "≤50", "≤100"], "note": ""}, {"en": "Color", "ko": "외관 색상", "unit": "APHA", "vals": ["", "≤20", "<30", "≤30", "<50", "", "≤20", "≤50", "≤30", ""], "note": ""}, {"en": "Turbidity", "ko": "탁도", "unit": "NTU", "vals": ["≤30", "≤2", "", "", "", "", "", "", "≤5", ""], "note": ""}, {"en": "Residual Solvents", "ko": "잔류용매", "unit": "ppm", "vals": ["≤2000", "", "", "", "", "", "", "", "", ""], "note": ""}, {"en": "DMC Insoluble", "ko": "DMC불용물", "unit": "ppm", "vals": ["", "", "", "", "", "", "", "", "", "≤500"], "note": ""}, {"en": "LiFSI Content", "ko": "LiFSI함량", "unit": "wt%", "vals": ["", "30±1.0", "", "", "", "", "30±0.5", "29.5~30.5", "30.0+0.5", ""], "note": ""}, {"en": "Density", "ko": "밀도", "unit": "g/cm³", "vals": ["", "", "", "", "", "", "1.223±0.004 (20℃)", "1.217±0.003 (25℃)", "1.220±0.010 (25℃)", ""], "note": ""}, {"en": "EMC Purity", "ko": "EMC 순도", "unit": "wt%", "vals": ["", "", "", "", "", "", "≥99.9", "≥99.9", "", ""], "note": ""}, {"en": "DMC+DEC", "ko": "DMC+DEC", "unit": "ppm", "vals": ["", "", "", "", "", "", "≤1000", "≤200", "", ""], "note": ""}, {"en": "Fluoride ion", "ko": "풀루오라이드 이온", "unit": "ppm", "vals": ["", "≤90", "", "", "", "", "≤100", "≤100", "", ""], "note": ""}, {"en": "Fluorosulfate", "ko": "풀루오로 황산염", "unit": "ppm", "vals": ["", "≤150", "", "", "", "", "≤200", "≤200", "", ""], "note": ""}, {"en": "Sulfamate", "ko": "황산암모늄", "unit": "ppm", "vals": ["", "≤60", "", "", "", "", "≤200", "≤200", "", ""], "note": ""}, {"en": "Cl / (Chlorine)", "ko": "염소", "unit": "ppm", "vals": ["≤20", "≤3", "<5", "≤20", "<20", "", "≤3", "≤5", "≤5", "≤10"], "note": ""}, {"en": "SO4 / (Sulfate ion)", "ko": "황산이온", "unit": "ppm", "vals": ["70", "≤20", "<70", "≤250", "<200", "", "≤10", "≤10", "≤10", "≤50"], "note": ""}, {"en": "Na / (Sodium)", "ko": "나트륨", "unit": "ppm", "vals": ["≤10", "≤30", "<10", "≤10", "<20", "", "≤5", "≤8", "≤5", "≤10"], "note": ""}, {"en": "K / (Kalium)", "ko": "칼륨", "unit": "ppm", "vals": ["≤10", "≤3", "<5", "≤10", "<5", "", "≤3", "≤5", "≤5", "≤5"], "note": ""}, {"en": "Ca / (Calcium)", "ko": "칼슘", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤5", "≤5"], "note": ""}, {"en": "Fe / (Iron, Ferrum)", "ko": "철", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤2", "≤5"], "note": ""}, {"en": "Pb / (Lead, Plumbum)", "ko": "납", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤1", "≤2"], "note": ""}, {"en": "Ni / (Nickel)", "ko": "니켈", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤1", "≤5"], "note": ""}, {"en": "Cr / (Chromium)", "ko": "크로뮴", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤1", "≤2"], "note": ""}, {"en": "Co / (Cobalt)", "ko": "코발트", "unit": "ppm", "vals": ["≤5", "", "", "≤10", "", "", "", "", "", ""], "note": ""}, {"en": "Cu / (Copper)", "ko": "구리", "unit": "ppm", "vals": ["≤5", "≤3", "<5", "≤10", "", "", "≤3", "≤5", "≤1", "≤5"], "note": ""}, {"en": "Zn / (Zinc)", "ko": "아연", "unit": "ppm", "vals": ["≤5", "≤3", "", "≤10", "", "", "≤3", "≤5", "≤1", "≤2"], "note": ""}, {"en": "Al / (Aluminium)", "ko": "알루미늄", "unit": "ppm", "vals": ["≤5", "", "", "≤10", "", "", "≤3", "", "≤2", ""], "note": ""}, {"en": "Cd / (Cadmium)", "ko": "카드뮴", "unit": "ppm", "vals": ["≤5", "≤3", "", "≤10", "", "", "≤3", "", "≤1", "≤2"], "note": ""}, {"en": "Mg / (Magnesium)", "ko": "마그네슘", "unit": "ppm", "vals": ["≤5", "", "", "≤30", "", "", "≤3", "≤5", "≤1", "≤5"], "note": ""}, {"en": "Mn / (Manganese)", "ko": "망간", "unit": "ppm", "vals": ["≤5", "", "", "≤10", "", "", "≤3", "", "", ""], "note": ""}, {"en": "As / (Arsenic)", "ko": "비소", "unit": "ppm", "vals": ["≤5", "", "", "", "", "", "", "", "≤1", "≤2"], "note": ""}, {"en": "Sr / (Strontium)", "ko": "스트론튬", "unit": "ppm", "vals": ["≤5", "", "", "", "", "", "", "", "", ""], "note": ""}, {"en": "Ag / (Silver)", "ko": "은", "unit": "ppm", "vals": ["≤5", "", "", "", "", "", "", "", "", ""], "note": ""}, {"en": "Ba / (Barium)", "ko": "바륨", "unit": "ppm", "vals": ["≤5", "", "", "", "", "", "≤3", "", "", ""], "note": ""}, {"en": "Hg / (Mercury)", "ko": "수은", "unit": "ppm", "vals": ["≤5", "", "", "", "", "", "", "", "≤1", ""], "note": ""}, {"en": "기타불순물", "ko": "", "unit": "pA*s", "vals": ["", "", "", "≤30", "", "", "", "", "", ""], "note": ""}]}};
+var specZoom = 100;
+var curSpec = 'LiPO2F2';
+var specEdits = {}; // {sheet: {rowIdx_colIdx: value}}
+
+function loadSpecEdits(){
+  try{ specEdits = JSON.parse(localStorage.getItem('epc_spec_edits')||'{}'); }catch(e){ specEdits={}; }
+}
+function saveSpecData(){
+  // contenteditable 셀에서 현재 값 수집
+  var container = document.getElementById('spec-table-container');
+  if(!container)return;
+  container.querySelectorAll('[data-spec-cell]').forEach(function(td){
+    var key = td.getAttribute('data-spec-cell');
+    var val = td.textContent.trim();
+    var orig = td.getAttribute('data-orig');
+    if(!specEdits[curSpec]) specEdits[curSpec]={};
+    if(val !== orig){
+      specEdits[curSpec][key] = val;
+      td.classList.add('spec-changed');
+    } else {
+      delete specEdits[curSpec][key];
+      td.classList.remove('spec-changed');
+    }
+  });
+  try{ localStorage.setItem('epc_spec_edits', JSON.stringify(specEdits)); }catch(e){}
+  toast('SPEC 데이터가 저장됐습니다 ✓');
+}
+function resetSpecData(){
+  if(!confirm('이 시트의 수정 내용을 모두 초기화할까요?')) return;
+  if(specEdits[curSpec]) delete specEdits[curSpec];
+  try{ localStorage.setItem('epc_spec_edits', JSON.stringify(specEdits)); }catch(e){}
+  renderSpec();
+  toast('초기화됐습니다');
+}
+function adjSpecZoom(d){
+  specZoom = d===0 ? 100 : Math.max(50, Math.min(200, specZoom+d));
+  var wrap = document.getElementById('spec-table-wrap');
+  if(wrap) wrap.style.transform = 'scale('+specZoom/100+')';
+  var pct = document.getElementById('spec-zoom-pct');
+  if(pct) pct.textContent = specZoom+'%';
+}
+function switchSpec(sheet){
+  curSpec = sheet;
+  var b1=document.getElementById('spec-tab-lipo'), b2=document.getElementById('spec-tab-lifsi');
+  if(b1){b1.style.background=sheet==='LiPO2F2'?'var(--acc)':'none';b1.style.color=sheet==='LiPO2F2'?'#fff':'var(--tx2)';b1.style.borderColor=sheet==='LiPO2F2'?'var(--acc)':'var(--bd2)';}
+  if(b2){b2.style.background=sheet==='LiFSI'?'var(--acc)':'none';b2.style.color=sheet==='LiFSI'?'#fff':'var(--tx2)';b2.style.borderColor=sheet==='LiFSI'?'var(--acc)':'var(--bd2)';}
+  renderSpecTable();
+}
+
+function renderSpec(){
+  loadSpecEdits();
+  renderSpecTable();
+}
+
+function renderSpecTable(){
+  var container = document.getElementById('spec-table-container');
+  if(!container) return;
+  var data = SPEC_BASE[curSpec];
+  var edits = specEdits[curSpec] || {};
+
+  var html = '<div class="spec-wrap"><table class="spec-table"><thead><tr>';
+
+  if(curSpec==='LiPO2F2'){
+    html += '<th class="col-item">시험 항목</th><th class="col-item" style="left:160px;min-width:90px;">서브</th>';
+    data.companies.forEach(function(co,ci){
+      var isEP = co.includes('이피캠텍');
+      html += '<th'+(isEP?' class="ep-col"':'')+'>'+co+'</th>';
+    });
+    html += '<th>비고</th></tr></thead><tbody>';
+
+    var inMetalGroup = false;
+    data.rows.forEach(function(row,ri){
+      var isMetal = row.item.includes('금속') || row.item.includes('Metal');
+      var hasSub = row.sub && row.sub.trim();
+      html += '<tr>';
+      if(isMetal && !inMetalGroup){ inMetalGroup=true; }
+      if(hasSub){
+        html += '<td class="col-item" style="left:0;color:var(--tx3);font-size:10px;font-weight:400;padding-left:14px;"></td>';
+        html += '<td class="col-item sub-item" style="left:160px;font-size:10px;font-weight:600;">'+escH(row.sub)+'</td>';
+      } else {
+        inMetalGroup = false;
+        html += '<td class="col-item" colspan="2">'+escH(row.item)+'</td>';
+      }
+      row.vals.forEach(function(val,vi){
+        var key = ri+'_'+vi;
+        var edited = edits[key] !== undefined;
+        var dispVal = edited ? edits[key] : val;
+        var isEP = data.companies[vi] && data.companies[vi].includes('이피캠텍');
+        html += '<td class="val-cell'+(isEP?' ep-col':'')+(edited?' spec-changed':'')+'" '
+          +'contenteditable="true" '
+          +'data-spec-cell="'+key+'" '
+          +'data-orig="'+escH(val)+'" '
+          +'oninput="onSpecCellEdit(this)" '
+          +'>'+escH(dispVal)+'</td>';
+      });
+      html += '<td class="note-cell">'+escH(row.note)+'</td>';
+      html += '</tr>';
+    });
+
+  } else {
+    // LiFSI
+    html += '<th class="col-item">항목 (영문)</th><th class="col-item" style="left:160px;min-width:70px;">단위</th>';
+    data.companies.forEach(function(co,ci){
+      var isEP = co.includes('이피캠텍');
+      html += '<th'+(isEP?' class="ep-col"':'')+'>'+co+'</th>';
+    });
+    html += '<th>비고</th></tr></thead><tbody>';
+
+    data.rows.forEach(function(row,ri){
+      html += '<tr>';
+      html += '<td class="col-item">'+escH(row.en)+(row.ko?'<br><span style="font-size:10px;color:var(--tx3);font-weight:400;">'+escH(row.ko)+'</span>':'')+'</td>';
+      html += '<td class="col-item" style="left:160px;font-size:10px;color:var(--tx3);">'+escH(row.unit)+'</td>';
+      row.vals.forEach(function(val,vi){
+        var key = ri+'_'+vi;
+        var edited = edits[key] !== undefined;
+        var dispVal = edited ? edits[key] : val;
+        var isEP = data.companies[vi] && data.companies[vi].includes('이피캠텍');
+        html += '<td class="val-cell'+(isEP?' ep-col':'')+(edited?' spec-changed':'')+'" '
+          +'contenteditable="true" '
+          +'data-spec-cell="'+key+'" '
+          +'data-orig="'+escH(val)+'" '
+          +'oninput="onSpecCellEdit(this)" '
+          +'>'+escH(dispVal)+'</td>';
+      });
+      html += '<td class="note-cell">'+escH(row.note)+'</td>';
+      html += '</tr>';
+    });
+  }
+
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+function onSpecCellEdit(td){
+  var val = td.textContent.trim();
+  var orig = td.getAttribute('data-orig');
+  if(val !== orig){
+    td.classList.add('spec-changed');
+  } else {
+    td.classList.remove('spec-changed');
+  }
+}
+
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+
+
+
+/* ══ 업체별 뉴스 DB ══ */
+var CLI_NEWS = {
+  "Samsung SDI": [
+    {
+      "title": "삼성SDI, 전고체 배터리 BMW·Solid Power와 공동 검증 협약 체결 (600마일, 9분 충전 목표)",
+      "date": "2025.10",
+      "url": "https://www.solidpowerbattery.com/investor-relations/investor-news/news-details/2025/Solid-Power-Partners-with-Samsung-SDI-and-BMW-to-Advance-All-Solid-State-Battery-Technology/default.aspx",
+      "src": "Solid Power/GNN",
+      "body": "2025년 10월, 삼성SDI는 BMW·Solid Power와 전고체 배터리 공동 개발·검증 협약을 체결했습니다. 에너지 밀도 500Wh/kg, 주행거리 600마일(약 965km), 9분 충전을 목표로 하며 2027년 양산을 계획 중입니다."
+    },
+    {
+      "title": "삼성SDI, RE+ 2025에서 차세대 ESS 배터리 SBB 1.7·2.0 첫 공개",
+      "date": "2025.09",
+      "url": "https://www.samsungsdi.com/sdi-now/sdi-news/4522.html",
+      "src": "Samsung SDI 공식",
+      "body": "라스베이거스 RE+ 2025에서 SBB 1.7과 SBB 2.0을 공개했습니다. 두 제품 모두 미국 현지 생산이 예정되어 있으며, UPS 솔루션과 각형 배터리 기술도 함께 전시됐습니다."
+    },
+    {
+      "title": "삼성SDI, 2025년 연간 실적 발표 — 역대 최대 ESS 매출 달성",
+      "date": "2026.02",
+      "url": "https://news.samsungsdi.com/global/articleView?seq=370",
+      "src": "Samsung SDI IR",
+      "body": "2025년 4Q 매출 3.86조 원, 연간 13.27조 원을 기록했습니다. ESS 배터리가 분기 최대 매출을 달성했으며, AMPC 혜택 증가로 영업손실이 대폭 축소됐습니다. 46시리즈 셀 수주도 확보했습니다."
+    },
+    {
+      "title": "삼성SDI, InterBattery 2025 참가 — 차세대 배터리 안전기술 공개",
+      "date": "2025.03",
+      "url": "https://www.samsungsdi.com/sdi-now/sdi-news/4242.html",
+      "src": "Samsung SDI 공식",
+      "body": "서울 코엑스 InterBattery 2025에서 전고체 배터리, SBB 1.5, 고출력 원통형 배터리 등을 전시했습니다. 열전파 방지(No Thermal Propagation) 안전 기술도 공개됐습니다."
+    },
+    {
+      "title": "삼성SDI, 1Q 2026 R&D·설비 투자 1조 원 이상 유지 — 차세대 배터리 경쟁력 확보",
+      "date": "2026.05",
+      "url": "https://www.upi.com/amp/Top_News/World-News/2026/05/17/samsung-sdi-investment-next-generation-batteries/1251779064000/",
+      "src": "UPI/Asia Today",
+      "body": "전기차 시장 둔화 속에서도 2026년 1Q에 1.02조 원 이상을 설비·R&D에 투자했습니다. 차세대 배터리 경쟁력 확보를 위한 투자 기조를 유지하고 있습니다."
+    }
+  ],
+  "SK On": [
+    {
+      "title": "SK On, 황화물계 전고체 배터리 파일럿 라인 가동 — 2029년 상용화 목표 앞당겨",
+      "date": "2025.09",
+      "url": "https://www.electrive.com/2025/09/16/sk-on-opens-pilot-plant-to-fast-track-solid-state-batteries/",
+      "src": "Electrive",
+      "body": "대전 배터리 연구소에 황화물계 전고체 배터리 파일럿 라인을 완공했습니다. Solid Power와 협력하며, 800Wh/L 용량으로 시작해 1,000Wh/L를 목표로 합니다. 상용화 목표가 2030년에서 2029년으로 앞당겨졌습니다."
+    },
+    {
+      "title": "SK On, InterBattery 2025에서 파우치·각형·원통형 전 형태 배터리 최초 전시",
+      "date": "2025.02",
+      "url": "https://eng.sk.com/news/sk-on-to-showcase-expanded-battery-portfolio-at-interbattery-2025",
+      "src": "SK 공식",
+      "body": "Dream Onward to the Future 테마로 InterBattery 2025에 참가했습니다. 세 가지 폼팩터 배터리를 동시 전시한 건 이번이 처음이며, 무선 BMS와 이머전 쿨링 기술도 공개됐습니다."
+    },
+    {
+      "title": "SK On, 고분자-산화물 복합 고체 전해질 개발 — 리튬금속 배터리 실온 구동 달성",
+      "date": "2025.06",
+      "url": "https://skinnonews.com/global/archives/15664",
+      "src": "SK Innovation Newsroom",
+      "body": "실온에서 구동하는 리튬금속 배터리용 고분자 복합 고체 전해질을 개발했습니다. 이온 전도도와 대기 안정성을 동시에 확보한 기술로, 전고체 배터리 상용화 기반이 됩니다."
+    },
+    {
+      "title": "SK On, Solid Power와 협력으로 파일럿 라인 수주 검증 완료 — 연내 가동 예정",
+      "date": "2025.11",
+      "url": "https://www.koreaherald.com/article/10617647",
+      "src": "코리아헤럴드",
+      "body": "Solid Power CEO와의 인터뷰에 따르면, 대전 파일럿 라인의 설치 수락 테스트(SAT) 6단계 중 3단계가 완료됐으며 연내 가동이 확정됐습니다."
+    },
+    {
+      "title": "SK On·SK Enmove 합병 완료 — 글로벌 배터리·에너지 솔루션 통합 체계 구축",
+      "date": "2025",
+      "url": "https://www.iea.org/reports/global-ev-outlook-2026/electric-vehicle-batteries",
+      "src": "IEA Global EV Outlook 2026",
+      "body": "SK On이 SK Enmove와 합병을 완료했습니다. 배터리와 윤활유·에너지 솔루션을 통합해 종합 에너지 기업으로 재편됐습니다."
+    }
+  ],
+  "LG Energy Solution": [
+    {
+      "title": "LG에너지솔루션, 2025년 2Q EPS 예상치 142% 상회 — 북미 ESS 점유율 1위 목표",
+      "date": "2025",
+      "url": "https://www.lgensol.com/kr/company-newsroom-detail?seq=8448",
+      "src": "LG에너지솔루션",
+      "body": "2025년 2분기 EPS가 예상치를 142% 상회했습니다. 2026년까지 북미 ESS 생산능력을 30GWh 이상으로 확장할 계획이며, LFP ESS 배터리 단독 공급업체 지위를 확보하는 전략을 추진 중입니다."
+    },
+    {
+      "title": "LG에너지솔루션, 미국 ESS 셀 양산 본격 돌입 — 북미 시장 점유율 1위 목표 2028",
+      "date": "2025",
+      "url": "https://www.lg.co.kr/media/release/28201",
+      "src": "LG 공식",
+      "body": "2025년 미국 ESS 셀 생산 양산을 시작으로 북미 시장 선점에 나섰습니다. 2028년 미국 ESS 시장점유율 1위와 글로벌 Top 3 SI 달성을 목표로 합니다."
+    },
+    {
+      "title": "LG에너지솔루션-혼다 JV(L-H배터리), 자산 4.2조 원 매각 — 재무 건전성 확보",
+      "date": "2025.12",
+      "url": "https://m.ddaily.co.kr/page/view/2025122623551379400",
+      "src": "디지털데일리",
+      "body": "LG에너지솔루션과 혼다의 합작 L-H 배터리 회사가 자산 4.2조 원 규모 건물·시설 자산 매각을 진행했습니다. 미국 EV 시장 불확실성 속에서 재무 유연성 확보를 위한 조치입니다."
+    },
+    {
+      "title": "LG에너지솔루션, 2026년 고전압 미드니켈 파우치·건식전극 LFP 제품 출시 계획",
+      "date": "2025",
+      "url": "https://www.lg.co.kr/media/release/28201",
+      "src": "LG 공식",
+      "body": "2026년까지 생산시설 운영 효율화로 전기차 캐즘을 극복하고, 2028년 고전압 미드니켈 파우치형·건식전극 LFP 제품을 출시해 경쟁 우위를 강화할 계획입니다."
+    },
+    {
+      "title": "파나소닉·LG에너지솔루션, 테슬라 저가 모델용 LFP 배터리 공급 불확실",
+      "date": "2025.05",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "디지털데일리",
+      "body": "테슬라의 저가 신모델에는 LFP 배터리가 탑재될 예정이나, LG에너지솔루션은 2026년 이후 LFP 양산이 가능할 전망입니다. 단기적으로는 CATL 비중이 확대될 수 있습니다."
+    }
+  ],
+  "엔켐": [
+    {
+      "title": "엔켐, CATL과 5년간 35만 톤 전해액 공급계약 체결 — 약 1.5조 원 규모",
+      "date": "2025.12",
+      "url": "http://www.businessreport.kr/news/articleView.html?idxno=50513",
+      "src": "비즈니스리포트",
+      "body": "글로벌 배터리 리더사와 2026~2030년 5년간 연 7만 톤, 총 35만 톤 전해액 공급 계약을 체결했습니다. 단일 고객 계약 기준 역대 최대입니다. 중국 ESS·EV용 매출도 전년 대비 150% 성장이 예상됩니다."
+    },
+    {
+      "title": "엔켐, 2026년 탈중국 공급망 대응 강화 — 북미 AMPC 요건 비(非)PFE 충족 준비",
+      "date": "2026.04",
+      "url": "https://www.paxetv.com/news/articleView.html?idxno=254819",
+      "src": "팍스경제TV",
+      "body": "미국 트럼프 행정부의 PFE(금지외국단체) 정책에 따라 2026년부터 AMPC 혜택을 받으려면 비PFE 조달 비중 60% 이상이 필요합니다. 엔켐은 고불소계 용매와 내열·내산화 첨가제 기반 차세대 전해액 라인업으로 대응 중입니다."
+    },
+    {
+      "title": "엔켐, 조지아 공장 15만 톤으로 증설 완료 — 북미 전해액 생산능력 대폭 확대",
+      "date": "2025",
+      "url": "https://www.paxetv.com/news/articleView.html?idxno=254819",
+      "src": "팍스경제TV",
+      "body": "조지아 제1공장을 기존 10.5만 톤에서 15만 톤으로 증설했습니다. 텍사스·테네시·캐나다 온타리오에 총 25만 톤 신설도 검토 중입니다. 2026년 전 세계 전해액 판매량 3위를 목표로 합니다."
+    },
+    {
+      "title": "엔켐, 2025년 중국 배터리 고객사 매출 물량 4500톤/월 돌파 전망",
+      "date": "2025",
+      "url": "http://www.businessreport.kr/news/articleView.html?idxno=50513",
+      "src": "비즈니스리포트",
+      "body": "2025년 4분기 월 매출 물량 기준 4,500톤 돌파가 예상됩니다. 연간 3.5만 톤 이상으로 전년 대비 150% 성장입니다. 2026년 중국 시장 공급량은 9만 톤 이상으로 확대될 전망입니다."
+    },
+    {
+      "title": "엔켐, 유럽 산업촉진법 수혜 기대 — EU 내 20만 톤 전해액 생산능력 부각",
+      "date": "2025",
+      "url": "https://www.paxetv.com/news/articleView.html?idxno=254819",
+      "src": "팍스경제TV",
+      "body": "폴란드(13만 톤)·헝가리(7만 톤) 공장을 포함해 EU 내 총 20만 톤 생산능력을 보유하고 있습니다. 유럽 산업촉진법 시행에 따른 수혜가 기대됩니다."
+    }
+  ],
+  "동화일렉트로라이트": [
+    {
+      "title": "동화일렉트로라이트, 인터배터리 2026 참가 — 다기능 첨가제·LFP용 전해액 R&D 성과 공개",
+      "date": "2026.03",
+      "url": "https://www.thelec.kr/news/articleView.html?idxno=53001",
+      "src": "디일렉(THE ELEC)",
+      "body": "인터배터리 2026에서 다기능성 전해액 첨가제, 초고용량 배터리용 고성능 전해액, LFP·LMR 배터리용 전해액 연구 성과를 발표했습니다. 전고체 및 리튬황 배터리용 차세대 소재 개발 현황도 공개됐습니다."
+    },
+    {
+      "title": "동화일렉트로라이트, 2025년 15만 톤 전해액 생산능력 확보 — IPO 추진 중",
+      "date": "2023",
+      "url": "https://www.etnews.com/20230623000217",
+      "src": "전자신문",
+      "body": "2025년까지 15만 톤 전해액 생산능력 확보를 목표로 합니다. 프리 IPO(1,200억 원 규모)를 완료하고 2025~2026년 코스닥 상장을 준비 중입니다."
+    },
+    {
+      "title": "동화일렉트로라이트, LFP·LMR 배터리용 차세대 전해액 연구개발 방향 공개",
+      "date": "2026.03",
+      "url": "https://www.thelec.kr/news/articleView.html?idxno=53001",
+      "src": "디일렉(THE ELEC)",
+      "body": "LFP 배터리의 출력·에너지 밀도 한계를 실리콘 음극재와 전해액 최적화로 극복하는 연구를 진행 중입니다. LMR 배터리 적용 전해액도 개발하고 있습니다."
+    },
+    {
+      "title": "동화일렉트로라이트, 전고체·리튬황 배터리용 차세대 소재 개발 현황 공유",
+      "date": "2026.03",
+      "url": "https://www.thelec.kr/news/articleView.html?idxno=53001",
+      "src": "디일렉(THE ELEC)",
+      "body": "인터배터리 2026에서 전고체 배터리와 리튬황 배터리용 전해질 소재 개발 로드맵을 발표했습니다. 글로벌 규제 대응 전략과 환경·안전 관련 기술 개발 방향도 제시됐습니다."
+    },
+    {
+      "title": "동화일렉트로라이트, K-배터리 3사 LFP 참전에 따른 전해액 수요 급증 전망",
+      "date": "2023",
+      "url": "https://www.etnews.com/20230623000217",
+      "src": "전자신문",
+      "body": "삼성SDI·SK On·LG에너지솔루션 모두 LFP 배터리 시장 참전을 공식화하면서, LFP용 전해액 수요가 급증할 전망입니다. 동화일렉트로라이트는 전해액·첨가제 개발에 주력해 대응할 계획입니다."
+    }
+  ],
+  "솔브레인": [
+    {
+      "title": "솔브레인, 이차전지 전해액 사업 확대 — IRA 수혜 공급망 핵심 업체로 부상",
+      "date": "2025",
+      "url": "https://m.thinkpool.com/compDiscuss/cont/1012125",
+      "src": "하이투자증권",
+      "body": "하이투자증권은 IRA 탈중국 공급망 수혜 핵심 전해액 업체로 솔브레인을 지목했습니다. 중국 의존도를 낮추려는 배터리 셀 업체들의 새로운 공급망 구축 수요가 솔브레인에 유리하게 작용합니다."
+    },
+    {
+      "title": "솔브레인, 반도체 소재 + 전해액 이중 포트폴리오로 안정적 성장 기조 유지",
+      "date": "2025",
+      "url": "https://m.thinkpool.com/compDiscuss/cont/1012125",
+      "src": "시장 분석",
+      "body": "반도체 공정 소재(세정·식각)와 이차전지 전해액의 이중 사업 구조로 경기 사이클 리스크를 분산하고 있습니다. 세종·구미 공장을 거점으로 국내외 배터리 셀 업체에 공급 중입니다."
+    },
+    {
+      "title": "솔브레인, 전해액 고전압·고온 특성 강화 제품 개발 — 차세대 배터리 대응",
+      "date": "2025",
+      "url": "https://m.thinkpool.com/compDiscuss/cont/1012125",
+      "src": "업계",
+      "body": "고온·고전압 환경에서 안정성을 높인 전해액 개발을 진행 중입니다. NMC·LFP 다양한 배터리 케미스트리에 대응하는 전해액 라인업을 강화하고 있습니다."
+    },
+    {
+      "title": "솔브레인, 북미 IRA 공급망 비중국 조달 수혜 — 국내 전해액 업체 수요 증가",
+      "date": "2026",
+      "url": "https://www.paxetv.com/news/articleView.html?idxno=254819",
+      "src": "팍스경제TV",
+      "body": "2026년부터 AMPC 혜택을 받으려는 미국 내 배터리 제조사들이 비PFE(비중국) 전해액 조달 비중을 높여야 하면서, 국내 전해액 업체 중 솔브레인의 수요가 증가할 전망입니다."
+    },
+    {
+      "title": "솔브레인, 2025년 전해액 매출 성장 전망 — 고부가 첨가제 라인업 확대",
+      "date": "2025",
+      "url": "https://m.thinkpool.com/compDiscuss/cont/1012125",
+      "src": "증권가",
+      "body": "고부가 전해질 첨가제와 특수 전해액 제품 판매 비중이 높아지며 수익성이 개선될 전망입니다. 국내 배터리 3사와의 장기 공급 계약을 기반으로 안정적인 매출 성장이 기대됩니다."
+    }
+  ],
+  "덕산일렉테라": [
+    {
+      "title": "덕산일렉테라, 미국 공장 양산 개시 — 북미 배터리 공급망에 전해액 첫 납품",
+      "date": "2025.09",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "업계",
+      "body": "덕산테코피아 자회사 덕산일렉테라가 미국 테네시 공장에서 EV용 전해액을 생산해 북미 배터리·완성차 공급망에 첫 납품했습니다. 연산 2,000톤 규모로 시작하며 IRA 대응 현지 공급망 구축에 집중합니다."
+    },
+    {
+      "title": "덕산일렉테라, 미국 공장 CAPA 확대 — 2026년 12만 톤 목표",
+      "date": "2026",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "업계",
+      "body": "현재 공주 공장(최대 2.5만 톤)·미국 공장(2026년 12만 톤 목표)을 통해 총 약 7만 톤 합산 CAPA를 확보 중입니다. IRA 인플레이션 감축법 대응을 위해 미국 현지 생산에 집중합니다."
+    },
+    {
+      "title": "덕산일렉테라, 리튬 공급망 확보 — 싱가포르 Visionary Energy·모로코 리튬 협력",
+      "date": "2025",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "업계",
+      "body": "전해액 핵심 원재료 리튬의 안정적 조달을 위해 싱가포르 리튬 업체 Visionary Energy와 협력하고, 모로코 리튬 광산에서 물량을 확보했습니다. 2026년 기준 연 3만 톤 이상 생산이 예정됩니다."
+    },
+    {
+      "title": "덕산일렉테라, 일본 센트럴글레스와 전해액 위탁생산 계약 체결 — 글로벌 확대",
+      "date": "2025",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "업계",
+      "body": "일본 소재 기업 센트럴글레스(Central Glass)와 전해액 위탁생산 계약을 체결했습니다. 글로벌 고객 확대, 기술 신뢰성 확보, 해외 공급 확대 효과를 기대하고 있습니다."
+    },
+    {
+      "title": "덕산일렉테라, 2025년 하반기 양산 매출 시작 — 2026년 이후 본격 성장 기대",
+      "date": "2025",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "업계",
+      "body": "증권사 및 업계에서는 덕산일렉테라를 덕산테코피아의 가장 중요한 성장 축으로 평가합니다. 2025년 하반기 양산 매출 개시, 2026년 이후 본격 성장이 기대됩니다."
+    }
+  ],
+  "Tesla": [
+    {
+      "title": "테슬라, 파나소닉·LG에너지솔루션과 4680 원통형 배터리 공급망 구축 — 2025~2026년 분수령",
+      "date": "2025",
+      "url": "https://sneresearch.com/kr/business/report_view/226/page/0",
+      "src": "SNE Research",
+      "body": "테슬라와 파나소닉이 4680 배터리 양산 경험을 쌓는 한편, 국내 배터리사도 공급 체계 본격 구축 중입니다. 2025~2026년이 4680 배터리 양산 안정화의 핵심 시기로 평가됩니다."
+    },
+    {
+      "title": "테슬라 저가 신모델 출시 — LFP 배터리 탑재 예정, CATL 비중 확대 가능성",
+      "date": "2025.05",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "디지털데일리",
+      "body": "테슬라가 기존 모델 대비 저렴한 신모델 출시를 발표했습니다. LFP 배터리 탑재가 예정되어 있으나 LG에너지솔루션·파나소닉의 LFP 양산 준비가 부족해 단기간 CATL 의존도가 높아질 수 있습니다."
+    },
+    {
+      "title": "테슬라, Samsung SDI에 ESS 배터리 약 2.1조 원 규모 공급 협상 중",
+      "date": "2025",
+      "url": "https://enkiai.com/samsung/samsungs-2025-battery-strategy-a-global-power-play/",
+      "src": "EnkiAI",
+      "body": "삼성SDI와 테슬라가 약 2.1조 원 규모의 ESS 배터리 공급 계약 협상을 진행 중인 것으로 알려졌습니다. 성사 시 삼성SDI의 ESS 사업 다각화에 중요한 전환점이 됩니다."
+    },
+    {
+      "title": "테슬라 Model Y 2026년형, 배터리 효율 개선 — 공인 주행거리 500km 이상",
+      "date": "2026",
+      "url": "https://web.getcha.kr/blog/tesla-model-y-long-range-battery-performance-2026",
+      "src": "게차닷컴",
+      "body": "2026년형 테슬라 Model Y 롱레인지는 최신 배터리 기술을 반영해 WLTP 기준 500km 이상 주행거리를 달성했습니다. 충전 속도와 에너지 효율도 개선됐습니다."
+    },
+    {
+      "title": "테슬라 Powerwall, 2025년 100만 대 설치 달성 — 가정용 ESS 시장 선도",
+      "date": "2025",
+      "url": "https://www.tesla.com/ko_kr/powerwall",
+      "src": "Tesla 공식",
+      "body": "2025년 테슬라 Powerwall 누적 설치 대수가 100만 대를 돌파했습니다. 가정용 배터리 저장 시장에서 압도적인 점유율을 유지하며 AI 데이터센터용 에너지 저장 솔루션으로 사업을 확장 중입니다."
+    }
+  ],
+  "Panasonic": [
+    {
+      "title": "파나소닉, 테슬라 4680 배터리 양산 — 2025~2026년 본격 생산 체계 확립",
+      "date": "2025",
+      "url": "https://sneresearch.com/kr/business/report_view/226/page/0",
+      "src": "SNE Research",
+      "body": "파나소닉이 테슬라와 협력해 4680 원통형 배터리 양산에 나서고 있습니다. 2025~2026년이 양산 안정화의 핵심 시기로, 미국 네바다 기가팩토리에서 생산을 확대 중입니다."
+    },
+    {
+      "title": "파나소닉, LFP 배터리 공급 불확실 — 삼원계 중심 포트폴리오 유지",
+      "date": "2025.05",
+      "url": "https://m.ddaily.co.kr/page/view/2025051916134805789",
+      "src": "디지털데일리",
+      "body": "파나소닉은 삼원계(NMC·NCA) 중심 포트폴리오를 유지하고 있어 테슬라 저가 모델용 LFP 공급이 단기적으로 어렵습니다. 2025년 양산 일정 내 LFP 공급은 불투명한 상황입니다."
+    },
+    {
+      "title": "파나소닉, 2170·4680 원통형 배터리로 테슬라 공급 지속 — 고출력 EV용 배터리 강화",
+      "date": "2025",
+      "url": "https://sneresearch.com/kr/business/report_view/226/page/0",
+      "src": "SNE Research",
+      "body": "기존 2170 규격과 신형 4680 규격 원통형 배터리를 테슬라에 지속 공급 중입니다. 미국 현지 생산 체계를 강화해 IRA 대응과 공급 안정성을 동시에 확보하는 전략입니다."
+    },
+    {
+      "title": "파나소닉, 일본·미국 네바다 기가팩토리 EV 배터리 생산능력 확대 추진",
+      "date": "2025",
+      "url": "https://sneresearch.com/kr/business/report_view/226/page/0",
+      "src": "업계",
+      "body": "일본 국내 공장과 미국 네바다 기가팩토리의 생산능력을 확대하며 글로벌 EV 배터리 수요에 대응하고 있습니다. 연산 50GWh 이상의 생산능력을 목표로 투자를 지속합니다."
+    },
+    {
+      "title": "파나소닉·테슬라, 배터리 기술 협력 지속 — 차세대 배터리 공동 개발 기대",
+      "date": "2025",
+      "url": "https://sneresearch.com/kr/business/report_view/226/page/0",
+      "src": "업계",
+      "body": "파나소닉과 테슬라의 배터리 기술 협력은 장기간 유지되고 있습니다. 4680 배터리를 넘어 고체·리튬금속 등 차세대 배터리 개발에서도 협력이 지속될 것으로 기대됩니다."
+    }
+  ],
+  "Central Glass": [
+    {
+      "title": "Central Glass, 덕산일렉테라와 전해액 위탁생산 계약 체결 — 한국 공급망 진입",
+      "date": "2025",
+      "url": "https://www.central-glass.co.jp",
+      "src": "업계",
+      "body": "일본 소재 기업 센트럴글레스가 덕산일렉테라와 전해액 위탁생산 계약을 체결했습니다. 기술 신뢰성 확보와 한국·미국 공급망 확대를 목표로 합니다."
+    },
+    {
+      "title": "Central Glass, LiPF6 전해질 및 전해액 원료 글로벌 공급 확대",
+      "date": "2025",
+      "url": "https://www.central-glass.co.jp",
+      "src": "Central Glass 공식",
+      "body": "일본과 중국을 거점으로 LiPF6(리튬헥사플루오로인산염) 및 전해액 원료를 글로벌 배터리 업체에 공급 중입니다. 연 1만 톤 이상의 생산능력을 보유하고 있습니다."
+    },
+    {
+      "title": "Central Glass, 전해질 고순도화·저수분 기술 고도화 — 차세대 배터리 소재 대응",
+      "date": "2025",
+      "url": "https://www.central-glass.co.jp",
+      "src": "업계",
+      "body": "고순도 전해질 원료 생산 기술을 고도화하고 있습니다. 수분 함량 최소화(70ppm 이하 목표)와 불순물 저감 기술을 통해 차세대 배터리용 소재 경쟁력을 강화 중입니다."
+    },
+    {
+      "title": "Central Glass, 한국·미국 배터리 공급망 진입 — 탈중국 수요 대응",
+      "date": "2025",
+      "url": "https://www.central-glass.co.jp",
+      "src": "업계",
+      "body": "IRA 등 글로벌 탈중국 공급망 재편 흐름 속에서, 일본계 전해질 소재 업체인 센트럴글레스의 역할이 부각되고 있습니다. 한국 이차전지 소재 업체와의 협력을 강화하고 있습니다."
+    },
+    {
+      "title": "Central Glass, 2025년 전해질 원료 수요 증가 대응 — 생산설비 증설 검토",
+      "date": "2025",
+      "url": "https://www.central-glass.co.jp",
+      "src": "업계",
+      "body": "글로벌 이차전지 시장 성장에 따라 LiPF6 수요가 증가하면서 생산설비 증설을 검토 중입니다. 특히 북미·유럽 시장 공급망 강화를 위한 전략적 파트너십 확대가 예상됩니다."
+    }
+  ],
+  "MUIS": [
+    {
+      "title": "MUIS(일본), 전해질 원료 LiPF6 공급 — 한국 전해액 업체 주요 원재료 공급사",
+      "date": "2025",
+      "url": "https://www.muis.co.jp",
+      "src": "업계",
+      "body": "일본 MUIS는 이차전지 전해액의 핵심 원료인 LiPF6를 포함한 전해질 원료를 한국 전해액 업체들에 안정적으로 공급하고 있습니다. 품질 관리와 납기 안정성으로 신뢰도가 높습니다."
+    },
+    {
+      "title": "MUIS, 고순도 전해질 원료 기술 고도화 — 수분·불산 저감 기술 선도",
+      "date": "2025",
+      "url": "https://www.muis.co.jp",
+      "src": "업계",
+      "body": "수분(100ppm 이하)·불산(HF) 저감 기술을 지속 고도화하며 고순도 전해질 원료를 공급합니다. 한국·일본 배터리 소재 업체들의 고품질 SPEC 요구에 부응하는 기술력이 강점입니다."
+    },
+    {
+      "title": "MUIS, 탈중국 공급망 재편 수혜 — 일본계 전해질 소재 업체 부각",
+      "date": "2025",
+      "url": "https://www.muis.co.jp",
+      "src": "업계",
+      "body": "미국·유럽의 탈중국 공급망 정책에 따라 일본계 전해질 소재 업체인 MUIS의 역할이 부각되고 있습니다. 한국 배터리 업체들의 비중국 소재 조달 니즈에 부응하고 있습니다."
+    },
+    {
+      "title": "MUIS, 한국 배터리 소재 업체와 장기 공급 협력 강화",
+      "date": "2025",
+      "url": "https://www.muis.co.jp",
+      "src": "업계",
+      "body": "국내 이차전지 소재·전해액 업체들과의 장기 공급 협력 체계를 강화하고 있습니다. 안정적인 원재료 조달을 위한 전략적 파트너로 자리매김하고 있습니다."
+    },
+    {
+      "title": "MUIS, 신규 전해질 원료 라인업 확장 — 차세대 배터리 소재 대응",
+      "date": "2025",
+      "url": "https://www.muis.co.jp",
+      "src": "업계",
+      "body": "LiFSI, LiPO2F2 등 차세대 첨가제 원료를 포함한 신규 제품 라인업을 확장 중입니다. 전고체 배터리용 소재 개발에도 대응하는 연구를 진행하고 있습니다."
+    }
+  ]
+};
+
+
+/* ── 뉴스 아코디언 토글 ── */
+function toggleNews(id){
+  var body = document.getElementById(id);
+  var chev = document.getElementById('chev_'+id);
+  if(!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if(chev) chev.classList.toggle('open', !isOpen);
+}
+
+
+/* ══ 데이터 백업 & 복원 ══ */
+var BACKUP_KEYS = [
+  'epc_acts','epc_evts','epc_cust','epc_star',
+  'epc_gal','epc_apikey','epc_theme','epc_addr',
+  'epc_addr_col','epc_pins','epc_manmins','epc_users',
+  'epc_cli_info','epc_cli_contacts','epc_spec_edits'
+];
+
+function exportAllData(){
+  var backup = {
+    version: '3.0',
+    exportedAt: new Date().toISOString(),
+    exportedBy: curU ? ud(curU()) : '알 수 없음',
+    data: {}
+  };
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v) backup.data[k] = v;
+  });
+  var json = JSON.stringify(backup, null, 2);
+  var blob = new Blob([json], {type:'application/json'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  var date = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  a.href     = url;
+  a.download = 'epchemtech_backup_' + date + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('백업 파일이 다운로드됐습니다 ✓');
+}
+
+function importAllData(file){
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      var backup = JSON.parse(e.target.result);
+      if(!backup.data) throw new Error('올바른 백업 파일이 아닙니다');
+
+      var count = 0;
+      Object.keys(backup.data).forEach(function(k){
+        if(BACKUP_KEYS.includes(k)){
+          localStorage.setItem(k, backup.data[k]);
+          count++;
+        }
+      });
+
+      // 상태 재로드
+      try{ acts   = JSON.parse(localStorage.getItem('epc_acts')||'[]'); }catch(e2){}
+      try{ calEvts= JSON.parse(localStorage.getItem('epc_evts')||'[]'); }catch(e2){}
+      try{ custCli= JSON.parse(localStorage.getItem('epc_cust')||'{}'); }catch(e2){}
+      try{ galPhotos=JSON.parse(localStorage.getItem('epc_gal')||'[]'); }catch(e2){}
+      try{ manualMins=JSON.parse(localStorage.getItem('epc_manmins')||'[]'); }catch(e2){}
+      try{ starred=new Set(JSON.parse(localStorage.getItem('epc_star')||'[]')); }catch(e2){}
+      loadU(); upPill();
+
+      var expAt = backup.exportedAt ? new Date(backup.exportedAt).toLocaleString('ko-KR') : '알 수 없음';
+      alert('✅ 데이터 복원 완료!\n\n' + count + '개 항목 복원됨\n백업 날짜: ' + expAt + '\n\n페이지를 새로고침하면 모든 데이터가 표시됩니다.');
+      location.reload();
+    }catch(err){
+      alert('❌ 복원 실패\n\n' + err.message + '\n\n올바른 epchemtech_backup_*.json 파일을 선택해 주세요.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAllData(){
+  var confirmed = confirm(
+    '⚠️ 전체 데이터 초기화\n\n' +
+    '활동 기록, 캘린더, 회의록, 갤러리 사진,\n' +
+    '고객사 정보, 주소록 추가 항목이 모두 삭제됩니다.\n\n' +
+    '반드시 먼저 백업을 진행해 주세요!\n\n' +
+    '정말 초기화하시겠습니까?'
+  );
+  if(!confirmed) return;
+  var confirmed2 = confirm('마지막 확인입니다. 복구할 수 없습니다. 계속할까요?');
+  if(!confirmed2) return;
+
+  BACKUP_KEYS.forEach(function(k){
+    if(k !== 'epc_pins' && k !== 'epc_users' && k !== 'epc_apikey' && k !== 'epc_theme'){
+      localStorage.removeItem(k);
+    }
+  });
+  alert('초기화됐습니다. 페이지를 새로고침합니다.');
+  location.reload();
+}
+
+function openDataMgmtModal(){
+  var stats = {
+    acts: 0, evts: 0, mins: 0, gal: 0
+  };
+  try{ stats.acts = JSON.parse(localStorage.getItem('epc_acts')||'[]').length; }catch(e){}
+  try{ stats.evts = JSON.parse(localStorage.getItem('epc_evts')||'[]').length; }catch(e){}
+  try{ var m1=JSON.parse(localStorage.getItem('epc_acts')||'[]').filter(function(a){return a.minutes;}).length;
+       var m2=JSON.parse(localStorage.getItem('epc_manmins')||'[]').length;
+       stats.mins=m1+m2; }catch(e){}
+  try{ stats.gal = JSON.parse(localStorage.getItem('epc_gal')||'[]').length; }catch(e){}
+
+  // 총 용량
+  var totalSize = 0;
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v) totalSize += v.length;
+  });
+  var sizeKb = (totalSize / 1024).toFixed(1);
+
+  var div = document.createElement('div');
+  div.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:10001;display:flex;align-items:center;justify-content:center;padding:14px;overflow-y:auto;';
+  div.innerHTML =
+    '<div style="background:var(--bg1);border-radius:var(--rx);width:100%;max-width:380px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);">'
+    +'<div style="padding:12px 14px;border-bottom:0.5px solid var(--bd1);display:flex;justify-content:space-between;align-items:center;background:var(--acc);">'
+      +'<div style="font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px;">'
+        +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 7 12 3 4 7"/><polyline points="4 17 12 21 20 17"/><polyline points="4 12 12 16 20 12"/></svg>'
+        +'데이터 관리'
+      +'</div>'
+      +'<button onclick="this.closest(\'div[style*=position]\').remove()" style="background:none;border:none;font-size:16px;color:#fff;cursor:pointer;">✕</button>'
+    +'</div>'
+    +'<div style="padding:14px;">'
+
+      // 현재 저장 현황
+      +'<div class="backup-card">'
+        +'<div class="backup-card-title">'
+          +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+          +'현재 저장 현황'
+        +'</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">'
+          +'<div style="background:var(--bg1);border-radius:var(--rm);padding:8px;text-align:center;">'
+            +'<div style="font-size:18px;font-weight:700;color:var(--acc);">'+stats.acts+'</div>'
+            +'<div style="font-size:10px;color:var(--tx3);">활동 기록</div>'
+          +'</div>'
+          +'<div style="background:var(--bg1);border-radius:var(--rm);padding:8px;text-align:center;">'
+            +'<div style="font-size:18px;font-weight:700;color:var(--acc);">'+stats.evts+'</div>'
+            +'<div style="font-size:10px;color:var(--tx3);">캘린더 일정</div>'
+          +'</div>'
+          +'<div style="background:var(--bg1);border-radius:var(--rm);padding:8px;text-align:center;">'
+            +'<div style="font-size:18px;font-weight:700;color:var(--acc);">'+stats.mins+'</div>'
+            +'<div style="font-size:10px;color:var(--tx3);">회의록</div>'
+          +'</div>'
+          +'<div style="background:var(--bg1);border-radius:var(--rm);padding:8px;text-align:center;">'
+            +'<div style="font-size:18px;font-weight:700;color:var(--acc);">'+stats.gal+'</div>'
+            +'<div style="font-size:10px;color:var(--tx3);">갤러리 사진</div>'
+          +'</div>'
+        +'</div>'
+        +'<div style="font-size:10px;color:var(--tx3);text-align:right;">총 용량: '+sizeKb+' KB / 브라우저 저장</div>'
+      +'</div>'
+
+      // 내보내기
+      +'<div class="backup-card">'
+        +'<div class="backup-card-title">'
+          +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1D2D44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+          +'<span style="color:#1D2D44;">백업 내보내기</span>'
+        +'</div>'
+        +'<div class="backup-card-desc">모든 데이터를 JSON 파일로 저장합니다.<br>앱 업데이트 전에 반드시 백업하세요!</div>'
+        +'<button class="backup-btn backup-btn-export" onclick="exportAllData()">'
+          +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+          +'📦 백업 파일 다운로드'
+        +'</button>'
+      +'</div>'
+
+      // 가져오기
+      +'<div class="backup-card">'
+        +'<div class="backup-card-title">'
+          +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4A7C59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
+          +'<span style="color:#4A7C59;">백업 복원</span>'
+        +'</div>'
+        +'<div class="backup-card-desc">이전에 내보낸 백업 파일을 불러와<br>데이터를 복원합니다.</div>'
+        +'<label style="display:block;">'
+          +'<input type="file" accept=".json" style="display:none;" onchange="importAllData(this.files[0])">'
+          +'<div class="backup-btn backup-btn-import" style="cursor:pointer;">'
+            +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
+            +'📂 백업 파일 가져오기'
+          +'</div>'
+        +'</label>'
+      +'</div>'
+
+      // 주의 안내
+      +'<div style="background:#FFF9C4;border:0.5px solid #F9A825;border-radius:var(--rm);padding:10px 12px;margin-bottom:10px;">'
+        +'<div style="font-size:11px;font-weight:700;color:#F57F17;margin-bottom:4px;">⚠️ 앱 업데이트 시 데이터 보존 방법</div>'
+        +'<div style="font-size:11px;color:#7B5800;line-height:1.7;">'
+          +'1. 위 <strong>백업 파일 다운로드</strong> 클릭<br>'
+          +'2. GitHub에 새 <strong>index.html</strong> 업로드<br>'
+          +'3. 앱 재접속 후 <strong>백업 파일 가져오기</strong> 클릭'
+        +'</div>'
+      +'</div>'
+
+      // 전체 초기화
+      +'<button class="backup-btn backup-btn-reset" onclick="resetAllData()" style="margin-top:4px;">'
+        +'🗑️ 전체 데이터 초기화 (주의)'
+      +'</button>'
+
+    +'</div>'
+  +'</div>';
+
+  document.body.appendChild(div);
+}
+
 function closeModal(){document.getElementById('modal-area').innerHTML='';}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
